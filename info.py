@@ -23,7 +23,7 @@ API_HASH = environ.get('API_HASH', '6c884690ca85d39a4c5ad7c15b194e42')
 BOT_TOKEN = environ.get('BOT_TOKEN', '')
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '7245547751').split()]
 USERNAME = environ.get('USERNAME', 'https://t.me/ramSitaam')
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001769642119'))
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1003163434752'))
 MOVIE_GROUP_LINK = environ.get('MOVIE_GROUP_LINK', 'https://t.me/+7vxlanrMnWw4N2Fl')
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002990033841').split()]
 DATABASE_URI = environ.get('DATABASE_URI', "")
@@ -34,12 +34,12 @@ LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-1003173384552'))
 QR_CODE = environ.get('QR_CODE', 'https://graph.org/file/901c940e1e0f64e0fe6ac.jpg')
 
 #this vars is for when heroku or koyeb acc get banned, then change this vars as your file to link bot name
-BIN_CHANNEL = int(environ.get('BIN_CHANNEL', '-1001696019751'))
+BIN_CHANNEL = int(environ.get('BIN_CHANNEL', '-1003173929836'))
 URL = environ.get('URL', 'aks-file-to-link-525cd78edc50.herokuapp.com')
 
 # verify system vars
 IS_VERIFY = is_enabled('IS_VERIFY', True)
-LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-1001508306685'))
+LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-1003179051423'))
 TUTORIAL = environ.get("TUTORIAL", "")
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")
 SHORTENER_API = environ.get("SHORTENER_API", "")
@@ -51,7 +51,7 @@ TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "600"))
 # languages search
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam"]
 
-auth_channel = environ.get('AUTH_CHANNEL', '-1001993223506')
+auth_channel = environ.get('AUTH_CHANNEL', '-1003010434974')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1001857065489'))
 
