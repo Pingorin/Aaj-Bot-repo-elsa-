@@ -25,12 +25,12 @@ ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ
 USERNAME = environ.get('USERNAME', 'https://t.me/ramSitaam')
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001769642119'))
 MOVIE_GROUP_LINK = environ.get('MOVIE_GROUP_LINK', 'https://t.me/+7vxlanrMnWw4N2Fl')
-CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001805305525').split()]
+CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002990033841').split()]
 DATABASE_URI = environ.get('DATABASE_URI', "")
 DATABASE_URI2 = environ.get('DATABASE_URI2', "")
 DATABASE_NAME = environ.get('DATABASE_NAME', "")
 COLLECTION_NAME = environ.get('COLLECTION_NAME', '')
-LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-1001925490938'))
+LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-1003173384552'))
 QR_CODE = environ.get('QR_CODE', 'https://graph.org/file/901c940e1e0f64e0fe6ac.jpg')
 
 #this vars is for when heroku or koyeb acc get banned, then change this vars as your file to link bot name
@@ -56,7 +56,7 @@ AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_chan
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1001857065489'))
 
 # hastags request features
-request_channel = environ.get('REQUEST_CHANNEL', '-1001798901887')
+request_channel = environ.get('REQUEST_CHANNEL', '-1003140956750')
 REQUEST_CHANNEL = int(request_channel) if request_channel and id_pattern.search(request_channel) else None
 
 # bot settings
