@@ -144,7 +144,7 @@ async def next_page(bot, query):
 
     # NEW MODIFICATION: Add "How to download" button
     btn.append([
-        InlineKeyboardButton("❓ How to download", url="DOWNLOAD_INSTRUCTIONS_URL")
+        InlineKeyboardButton("❓ How to download", url="https://t.me/how_to_dwnload_mov")
     ])
     
     if 0 < offset <= int(MAX_BTN):
@@ -874,7 +874,7 @@ async def auto_filter(client, msg, spoll=False):
 
     # NEW MODIFICATION: Add "How to download" button
     btn.append([
-        InlineKeyboardButton("❓ How to download", url="DOWNLOAD_INSTRUCTIONS_URL")
+        InlineKeyboardButton("❓ How to download", url="https://t.me/how_to_dwnload_mov")
     ])
 
     if spoll:
