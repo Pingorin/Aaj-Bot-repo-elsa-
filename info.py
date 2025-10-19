@@ -20,7 +20,7 @@ def is_enabled(value, default):
 #main variables
 API_ID = int(environ.get('API_ID', '20638104'))
 API_HASH = environ.get('API_HASH', '6c884690ca85d39a4c5ad7c15b194e42')
-BOT_TOKEN = environ.get('BOT_TOKEN', '')
+BOT_TOKEN = environ.get('BOT_TOKEN', '8348689181:AAFj6VO4s6rk5D8HU-tC6oAAgSbRrCD1Se4')
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '7245547751').split()]
 USERNAME = environ.get('USERNAME', 'https://t.me/ramSitaam')
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1003163434752'))
@@ -53,7 +53,7 @@ LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam"]
 
 auth_channel = environ.get('AUTH_CHANNEL', '-1003010434974')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
-SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1001857065489'))
+SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 
 # hastags request features
 request_channel = environ.get('REQUEST_CHANNEL', '-1003140956750')
