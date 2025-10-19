@@ -18,18 +18,18 @@ def is_enabled(value, default):
         return default
 
 #main variables
-API_ID = int(environ.get('API_ID', '9544691'))
-API_HASH = environ.get('API_HASH', 'de2f2e633c293dcb0f73deebc364c306')
-BOT_TOKEN = environ.get('BOT_TOKEN', '6540424193:AAFeNHE8Lo2_WDNGG66OqJaip0qr1fA73_s')
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '1030335104').split()]
-USERNAME = environ.get('USERNAME', 'https://t.me/Aks_support01_bot')
+API_ID = int(environ.get('API_ID', '20638104'))
+API_HASH = environ.get('API_HASH', '6c884690ca85d39a4c5ad7c15b194e42')
+BOT_TOKEN = environ.get('BOT_TOKEN', '')
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '7245547751').split()]
+USERNAME = environ.get('USERNAME', 'https://t.me/ramSitaam')
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001769642119'))
-MOVIE_GROUP_LINK = environ.get('MOVIE_GROUP_LINK', 'https://t.me/masalafiles')
+MOVIE_GROUP_LINK = environ.get('MOVIE_GROUP_LINK', 'https://t.me/+7vxlanrMnWw4N2Fl')
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001805305525').split()]
-DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://ttttechnicalaks7:cHyZwKd4s5z4OXd4@cluster0.cmxxezj.mongodb.net/?retryWrites=true&w=majority")
-DATABASE_URI2 = environ.get('DATABASE_URI2', "mongodb+srv://ttttechnicalaks7:ttttechnicalaks77@cluster0.wbt3wht.mongodb.net/?retryWrites=true&w=majority")
-DATABASE_NAME = environ.get('DATABASE_NAME', "Aks2")
-COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Aks')
+DATABASE_URI = environ.get('DATABASE_URI', "")
+DATABASE_URI2 = environ.get('DATABASE_URI2', "")
+DATABASE_NAME = environ.get('DATABASE_NAME', "")
+COLLECTION_NAME = environ.get('COLLECTION_NAME', '')
 LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-1001925490938'))
 QR_CODE = environ.get('QR_CODE', 'https://graph.org/file/901c940e1e0f64e0fe6ac.jpg')
 
@@ -40,12 +40,12 @@ URL = environ.get('URL', 'aks-file-to-link-525cd78edc50.herokuapp.com')
 # verify system vars
 IS_VERIFY = is_enabled('IS_VERIFY', True)
 LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-1001508306685'))
-TUTORIAL = environ.get("TUTORIAL", "https://t.me/how_to_download_channel/17")
+TUTORIAL = environ.get("TUTORIAL", "")
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")
-SHORTENER_API = environ.get("SHORTENER_API", "06b24eb6bbb025713cd522fb3f696b6d5de11354")
-SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "tnshort.net")
-SHORTENER_API2 = environ.get("SHORTENER_API2", "e7beb3c8f756dfa15d0bec495abc65f58c0dfa95")
-SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "mdiskshortner.link")
+SHORTENER_API = environ.get("SHORTENER_API", "")
+SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "")
+SHORTENER_API2 = environ.get("SHORTENER_API2", "")
+SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "")
 TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "600"))
 
 # languages search
