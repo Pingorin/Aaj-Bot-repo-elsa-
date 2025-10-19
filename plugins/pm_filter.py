@@ -88,7 +88,7 @@ async def group_search(client, message):
             await message.delete()
         except:
             pass
-😊😊😊😊😊😊
+            
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
     ident, req, key, offset = query.data.split("_")
@@ -179,7 +179,7 @@ async def next_page(bot, query):
     except MessageNotModified:
         pass
     await query.answer()
-#  😊😊😊😊😊😊😊😊  
+
 @Client.on_callback_query(filters.regex(r"^languages#"))
 async def languages_cb_handler(client: Client, query: CallbackQuery):
     _, key, offset, req = query.data.split("#")
