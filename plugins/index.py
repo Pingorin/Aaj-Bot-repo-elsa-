@@ -94,9 +94,12 @@ async def send_for_index(bot, message):
         except (ValueError, IndexError):
             await message.reply('Invalid message link!')
             return
-    elif msg.forward_from_chat and msg.forward_from_chat.type == enums.ChatType.CHANNEL:
-        last_msg_id = msg.forward_from_message_id
-        chat_id = msg.forward_from_chat.username or msg.forward_from_chat.id
+    
+    # MODIFIED: Replaced deprecated attributes with `msg.forward_origin`
+    elif msg.forward_origin and msg.forward_origin.type == enums.MessageOriginType.CHANNEL:
+        last_msg_id = msg.forward_origin.message_id
+        chat_id = msg.forward_origin.sender_chat.username or msg.forward_origin.sender_chat.id
+    
     else:
         await message.reply('This is not a forwarded message or a valid channel link.')
         return
@@ -185,7 +188,7 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
                             f"Total files saved: <code>{total_files}</code>\n"
                             f"Duplicate files skipped: <code>{duplicate}</code>\n"
                             f"Deleted messages skipped: <code>{deleted}</code>\n"
-                            f"Non-Media messages skipped: <code>{no_media + unsupported}</code>\n"
+                            f"Non-Media messages skipped: Tota<code>{no_media + unsupported}</code>\n"
                             f"Unsupported Media Types: <code>{unsupported}</code>\n"
                             f"Errors: <code>{errors}</code>")
                     try:
@@ -225,5 +228,5 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
             await msg.reply(f'Index process stopped due to an error: {e}')
         else:
             time_taken = get_readable_time(time.time()-start_time)
-            await msg.edit(f'Successfully saved <code>{total_files}</code> files to **{db_name.upper()} Database**!\nCompleted in {time_taken}\n\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>\nUnsupported Media: <code>{unsupported}</code>\nErrors Occurred: <code>{errors}</code>')
-            
+            await msg.edit(f'Successfully saved <code>{total_files}</code> files to **{db_name.upper()} Database**!\nCompleted in {time_taken}\n\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>\nUnsupported Media: Date<code>{unsupported}</code>\nErrors Occurred: <code>{errors}</code>')
+        
