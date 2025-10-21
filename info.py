@@ -63,26 +63,12 @@ TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "600"))
 # languages search
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam"]
 
-# -------------------- NEW FSUB CONFIGURATION --------------------
-# Request FSub Channel 1 (Must be a channel ID)
-auth_channel = environ.get('AUTH_CHANNEL', None)
+auth_channel = environ.get('AUTH_CHANNEL', '-1003010434974')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
-# Public/Private Invite Link for AUTH_CHANNEL
-AUTH_CHANNEL_LINK = environ.get('AUTH_CHANNEL_LINK', '')
-
-# Request FSub Channel 2 (Must be a channel ID)
-req_fsub_id_2 = environ.get('REQ_FSUB_ID_2', None)
-REQ_FSUB_ID_2 = int(req_fsub_id_2) if req_fsub_id_2 and id_pattern.search(req_fsub_id_2) else None
-# Public/Private Invite Link for REQ_FSUB_ID_2
-REQ_FSUB_LINK_2 = environ.get('REQ_FSUB_LINK_2', '')
-
-# Regular FSub Channel 3 (Must be a channel ID)
-fsub_id_3 = environ.get('FSUB_ID_3', None)
-FSUB_ID_3 = int(fsub_id_3) if fsub_id_3 and id_pattern.search(fsub_id_3) else None
-# Public/Private Invite Link for FSUB_ID_3
-FSUB_LINK_3 = environ.get('FSUB_LINK_3', '')
-# ---------------------------------------------------------------------
-
+# --- ADDED SECOND AUTH CHANNEL ---
+auth_channel_2 = environ.get('AUTH_CHANNEL_2', '-1003148730240') # Set your second channel ID here in your environment variables
+AUTH_CHANNEL_2 = int(auth_channel_2) if auth_channel_2 and id_pattern.search(auth_channel_2) else None
+# ---------------------------------
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 
 # hastags request features
