@@ -11,7 +11,7 @@ import re, time
 
 lock = asyncio.Lock()
 
-# --- 1. New Callback Handler for Database Selection ---
+# --- 1. Callback Handler for Database Selection (Unchanged) ---
 
 @Client.on_callback_query(filters.regex(r'^index_db'))
 async def select_db_and_confirm(bot, query):
@@ -25,7 +25,6 @@ async def select_db_and_confirm(bot, query):
         return
 
     buttons = [[
-        # Updated callback data to include the selected db_name
         InlineKeyboardButton('YES', callback_data=f'index#yes#{db_name}#{chat_id}#{lst_msg_id}#{skip}')
     ], [
         InlineKeyboardButton('CLOSE', callback_data='close_data'),
@@ -38,7 +37,7 @@ async def select_db_and_confirm(bot, query):
         parse_mode=enums.ParseMode.HTML
     )
 
-# --- 2. Updated Main Callback Handler for Indexing Start/Cancel ---
+# --- 2. Main Callback Handler for Indexing (Unchanged) ---
 
 @Client.on_callback_query(filters.regex(r'^index'))
 async def index_files(bot, query):
@@ -46,7 +45,6 @@ async def index_files(bot, query):
     ident = data[1]
     
     if ident == 'yes':
-        # New format expected for YES: index#yes#db_name#chat_id#last_msg_id#skip
         try:
             db_name = data[2]
             chat = data[3]
@@ -63,25 +61,33 @@ async def index_files(bot, query):
         except ValueError:
             chat_id = chat
             
-        # Passing db_name to the core indexing function
         await index_files_to_db(int(lst_msg_id), chat_id, msg, bot, int(skip), db_name)
         
     elif ident == 'cancel':
         temp.CANCEL = True
         await query.message.edit("Trying to cancel Indexing...")
 
-# --- 3. Updated /index Command to Prompt for DB Selection ---
+# --- 3. MODIFIED /index Command ---
 
 @Client.on_message(filters.command('index') & filters.private & filters.incoming & filters.user(ADMINS))
 async def send_for_index(bot, message):
     if lock.locked():
         return await message.reply('Wait until the previous process completes.')
     i = await message.reply("Forward the last message from the channel or send its link.")
-    msg = await bot.listen(chat_id=message.chat.id, user_id=message.from_user.id, timeout=300)
-    await i.delete()
-    if not msg:
-        await message.reply("Timeout: No message received.")
+    
+    try:
+        # MODIFIED: Replaced bot.listen with bot.wait_for_message
+        msg = await bot.wait_for_message(
+            chat_id=message.chat.id, 
+            filters=filters.user(message.from_user.id), 
+            timeout=300
+        )
+    except asyncio.TimeoutError:
+        await i.delete()
+        await message.reply("Timeout: No message received. Please try again.")
         return
+    
+    await i.delete()
         
     if msg.text and msg.text.startswith("https://t.me"):
         try:
@@ -95,7 +101,6 @@ async def send_for_index(bot, message):
             await message.reply('Invalid message link!')
             return
     
-    # MODIFIED: Replaced deprecated attributes with `msg.forward_origin`
     elif msg.forward_origin and msg.forward_origin.type == enums.MessageOriginType.CHANNEL:
         last_msg_id = msg.forward_origin.message_id
         chat_id = msg.forward_origin.sender_chat.username or msg.forward_origin.sender_chat.id
@@ -113,17 +118,26 @@ async def send_for_index(bot, message):
         return await message.reply("I can only index channels.")
         
     s = await message.reply("Enter the number of messages to skip (e.g., `0` to start from the beginning).")
-    msg = await bot.listen(chat_id=message.chat.id, user_id=message.from_user.id, timeout=300)
-    await s.delete()
-    if not msg or not msg.text:
-        await message.reply("Timeout: No skip number received.")
+    
+    try:
+        # MODIFIED: Replaced bot.listen with bot.wait_for_message
+        msg = await bot.wait_for_message(
+            chat_id=message.chat.id, 
+            filters=filters.user(message.from_user.id), 
+            timeout=300
+        )
+    except asyncio.TimeoutError:
+        await s.delete()
+        await message.reply("Timeout: No skip number received. Please try again.")
         return
+
+    await s.delete()
+    
     try:
         skip = int(msg.text)
     except ValueError:
         return await message.reply("The number of messages to skip must be an integer.")
         
-    # NEW STEP: Database Selection Prompt
     db_buttons = [[
         InlineKeyboardButton('PRIMARY DB', callback_data=f'index_db#primary#{chat_id}#{last_msg_id}#{skip}'),
         InlineKeyboardButton('SECONDARY DB', callback_data=f'index_db#secondary#{chat_id}#{last_msg_id}#{skip}')
@@ -138,12 +152,12 @@ async def send_for_index(bot, message):
     )
 
 
-# --- 4. Original channel_info Command (No change needed) ---
+# --- 4. channel_info Command (Unchanged) ---
 
 @Client.on_message(filters.command('channel'))
 async def channel_info(bot, message):
     if message.from_user.id not in ADMINS:
-        await message.reply('ᴏɴʟʏ ᴛʜᴇ ʙᴏᴛ ᴏᴡɴᴇʀ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ... 😑')
+        await message.reply('ᴏɴʟʏ ᴛʜᴇ ʙᴏᴛ ᴏᴡɴᴇR ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ... 😑')
         return
     ids = CHANNELS
     if not ids:
@@ -155,7 +169,7 @@ async def channel_info(bot, message):
     text += f'\n**Total:** {len(ids)}'
     await message.reply(text)
 
-# --- 5. Updated Core Indexing Function to Accept db_name ---
+# --- 5. Core Indexing Function (Unchanged) ---
 
 async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary'):
     start_time = time.time()
@@ -188,7 +202,7 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
                             f"Total files saved: <code>{total_files}</code>\n"
                             f"Duplicate files skipped: <code>{duplicate}</code>\n"
                             f"Deleted messages skipped: <code>{deleted}</code>\n"
-                            f"Non-Media messages skipped: Tota<code>{no_media + unsupported}</code>\n"
+                            f"Non-Media messages skipped: <code>{no_media + unsupported}</code>\n"
                             f"Unsupported Media Types: <code>{unsupported}</code>\n"
                             f"Errors: <code>{errors}</code>")
                     try:
@@ -213,7 +227,6 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
                 
                 media.caption = message.caption
                 
-                # Call save_file with the selected database name
                 sts = await save_file(media, db_name=db_name)
                 
                 if sts == 'suc':
@@ -228,5 +241,5 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
             await msg.reply(f'Index process stopped due to an error: {e}')
         else:
             time_taken = get_readable_time(time.time()-start_time)
-            await msg.edit(f'Successfully saved <code>{total_files}</code> files to **{db_name.upper()} Database**!\nCompleted in {time_taken}\n\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>\nUnsupported Media: Date<code>{unsupported}</code>\nErrors Occurred: <code>{errors}</code>')
-        
+            await msg.edit(f'Successfully saved <code>{total_files}</code> files to **{db_name.upper()} Database**!\nCompleted in {time_taken}\n\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>\nUnsupported Media: <code>{unsupported}</code>\nErrors Occurred: <code>{errors}</code>')
+    
