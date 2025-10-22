@@ -147,7 +147,7 @@ async def send_for_index(bot, message):
     ]]
     
     await message.reply(
-        f'You are about to index files from: **{chat.title}**\nTotal Messages to process: <code>{last_msg_id}</code>\n\n**Please select the target database for saving the files:**', 
+        f'You are about to index files from: **{chat.title}**\nTotal Messages to process: f<code>{last_msg_id}</code>\n\n**Please select the target database for saving the files:**', 
         reply_markup=InlineKeyboardMarkup(db_buttons),
         parse_mode=enums.ParseMode.HTML
     )
@@ -243,4 +243,4 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot, skip, db_name='primary')
         else:
             time_taken = get_readable_time(time.time()-start_time)
             await msg.edit(f'Successfully saved <code>{total_files}</code> files to **{db_name.upper()} Database**!\nCompleted in {time_taken}\n\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>\nUnsupported Media: <code>{unsupported}</code>\nErrors Occurred: <code>{errors}</code>')
-            
+                    
