@@ -27,8 +27,9 @@ class Bot(Client):
             plugins={"root": "plugins"}
         )
         
-    async def start(self):
+        async def start(self):
         st = time.time()
+        temp.START_TIME = st # Save the actual start time
         b_users, b_chats = await db.get_banned()
         temp.BANNED_USERS = b_users
         temp.BANNED_CHATS = b_chats
