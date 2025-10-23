@@ -453,19 +453,15 @@ async def cb_handler(client: Client, query: CallbackQuery):
         )
     elif query.data == "referral":
     try:
-        # Check if user already has a link
         user_data = await db.get_user_data(query.from_user.id)
         referral_link = user_data.get('referral_link')
 
         if not referral_link:
-            # User doesn't have a link, so we create one
-            # Bot MUST be admin in REFERRAL_GROUP_ID with can_invite_users permission
             new_link = await client.create_chat_invite_link(
                 chat_id=REFERRAL_GROUP_ID,
                 name=f"ref_{query.from_user.id}" # Store referrer ID in the link name
             )
             referral_link = new_link.invite_link
-            # Save the new link to the user's DB record
             await db.set_referral_link(query.from_user.id, referral_link)
 
         referral_count = user_data.get('referral_count', 0)
