@@ -479,7 +479,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
     # ⬇️ This 'elif' must be aligned with the 'elif' blocks above it ⬇️
     elif query.data == "referral":
-        # ⬇️ This 'try' block must be indented *inside* the 'elif' ⬇️
         try:
             user_data = await db.get_user_data(query.from_user.id)
             referral_link = user_data.get('referral_link')
@@ -504,6 +503,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 disable_web_page_preview=True,
                 parse_mode=enums.ParseMode.HTML
             )
+        
+        # ⬇️ ADD THIS NEW EXCEPTION HANDLER ⬇️
+        except MessageNotModified:
+            # This catches the error when the user clicks the button multiple times.
+            # We can just answer the query silently to stop the error.
+            await query.answer()
+        
         except ChatAdminRequired:
             await query.answer("Error: I am not an admin in the referral group or I don't have permission to create invite links.", show_alert=True)
         except Exception as e:
