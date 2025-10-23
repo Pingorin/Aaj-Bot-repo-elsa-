@@ -129,23 +129,21 @@ async def next_page(bot, query):
         btn = [[InlineKeyboardButton(text=f"🔗 {get_size(file.file_size)}≽ {get_name(file.file_name)}", url=f'https://telegram.dog/{temp.U_NAME}?start=file_{query.message.chat.id}_{file.file_id}'),]
                 for file in files
               ]
-            btn.insert(0, [
-        InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#{offset}#{req}"),
-        InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}")
-    ])
-    btn.insert(0, [
-        InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
-        InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium"),
-    ])
-
-    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
-    btn.append(
-        [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
-    )
-    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
-    btn.append(
-        [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
-    )
+            
+        btn.insert(0, [
+            InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#{offset}#{req}"),
+            InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}")
+        ])
+        btn.insert(0, [
+            InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
+            InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium"),
+        ])
+        btn.append(
+            [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
+        )
+        btn.append(
+            [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
+        )
  
     if 0 < offset <= int(MAX_BTN):
         off_set = 0
