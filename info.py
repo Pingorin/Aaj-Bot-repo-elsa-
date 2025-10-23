@@ -75,4 +75,4 @@ SPELL_CHECK = is_enabled('SPELL_CHECK', True)
 LINK_MODE = is_enabled('LINK_MODE', True)
 # ... (near the end of the file, after LINK_MODE) ...
 LINK_MODE = is_enabled('LINK_MODE', True)
-REFERRAL_TARGET = int(environ.get('REFERRAL_TARGET', '10')) # Number of referrals required
+REFERRAL_TARGET = int(environ.get('REFERRAL_TARGET', '2')) # Number of referrals required
