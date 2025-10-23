@@ -62,29 +62,11 @@ async def start(client:Client, message):
             await client.send_message(LOG_CHANNEL, script.NEW_GROUP_TXT.format(temp.B_LINK, message.chat.title, message.chat.id, message.chat.username, group_link, total, user))       
             await db.add_chat(message.chat.id, message.chat.title)
         return 
-    if not await db.is_user_exist(message.from_user.id):
-        # Pass the referred_by_id to the add_user function
-        await db.add_user(message.from_user.id, message.from_user.first_name, referred_by=referred_by_id)
+        if not await db.is_user_exist(message.from_user.id):
+        # We now add the user *without* any referral info here.
+        # Referral info will be handled when they join the group.
+        await db.add_user(message.from_user.id, message.from_user.first_name)
         await client.send_message(LOG_CHANNEL, script.NEW_USER_TXT.format(temp.B_LINK, message.from_user.id, message.from_user.mention))
-        
-        # If they were referred, update the referrer's count and notify them
-        if referred_by_id:
-            try:
-                new_count = await db.increment_referral_count(referred_by_id)
-                
-                # Check if referrer reached the target and doesn't already have access
-                if new_count >= REFERRAL_TARGET and not await db.check_referral_access(referred_by_id):
-                    await db.grant_referral_access(referred_by_id)
-                    await client.send_message(referred_by_id, script.REFERRAL_TARGET_REACHED_MESSAGE.format(target=REFERRAL_TARGET))
-                # Otherwise, just send a notification if they don't have access
-                elif not await db.check_referral_access(referred_by_id):
-                    await client.send_message(referred_by_id, script.REFERRAL_SUCCESS_MESSAGE.format(
-                        user_name=message.from_user.first_name,
-                        count=new_count,
-                        target=REFERRAL_TARGET
-                    ))
-            except Exception as e:
-                logging.warning(f"Error updating referral count or notifying referrer: {e}")
     if len(message.command) == 1:
         buttons = [[
             InlineKeyboardButton('⇆ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘs ⇆', url=f'http://t.me/{temp.U_NAME}?startgroup=start')
