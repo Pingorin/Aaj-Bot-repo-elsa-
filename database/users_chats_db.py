@@ -240,12 +240,14 @@ class Database:
             async for user in data:
                 expired_users.append(user)
         return expired_users
-
+        # ... (this is the function before your new ones)
     async def remove_premium_access(self, user_id):
         return await self.update_one(
             {"id": user_id}, {"$set": {"expiry_time": None}}
         )
-        
+
+    # ⬇️ FIX: All these functions must be aligned at this level ⬇️
+
     async def get_user_data(self, id):
         # Gets data from the main user collection (self.col)
         user = await self.col.find_one({'id': int(id)})
@@ -257,8 +259,7 @@ class Database:
         user = await self.get_user_data(user_id)
         return user.get('referral_count', 0) if user else 0
 
-            async def grant_referral_access(self, user_id):
-        # ⬇️ FIX: This entire block of code is now correctly indented ⬇️
+    async def grant_referral_access(self, user_id):
         # Grant 1 month (30 days) of premium access
         expiry_time = datetime.datetime.now() + datetime.timedelta(days=30)
         user_data = {"id": int(user_id), "expiry_time": expiry_time}
@@ -270,7 +271,6 @@ class Database:
         # to prevent this from being triggered again
         await self.col.update_one({'id': int(user_id)}, {'$set': {'referral_access': True}})
 
-
     async def check_referral_access(self, user_id):
         # Checks the main user collection (self.col)
         user = await self.get_user_data(user_id)
@@ -280,12 +280,5 @@ class Database:
         # Checks the main user collection (self.col)
         user = await self.get_user_data(user_id)
         return user.get('referral_count', 0) if user else 0
-    # --- ADD THESE TWO NEW FUNCTIONS ---
-    async def set_referral_link(self, user_id, link):
-        await self.col.update_one({'id': int(user_id)}, {'$set': {'referral_link': link}})
-
-    async def get_referrer_by_link(self, link):
-        user = await self.col.find_one({'referral_link': link})
-        return user
 
 db = Database()
