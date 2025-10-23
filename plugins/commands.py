@@ -64,9 +64,8 @@ async def start(client:Client, message):
             await client.send_message(LOG_CHANNEL, script.NEW_GROUP_TXT.format(temp.B_LINK, message.chat.title, message.chat.id, message.chat.username, group_link, total, user))       
             await db.add_chat(message.chat.id, message.chat.title)
         return 
-        if not await db.is_user_exist(message.from_user.id):
-        # We now add the user *without* any referral info here.
-        # Referral info will be handled when they join the group.
+    if not await db.is_user_exist(message.from_user.id):
+        # These lines are now correctly indented with 4 spaces
         await db.add_user(message.from_user.id, message.from_user.first_name)
         await client.send_message(LOG_CHANNEL, script.NEW_USER_TXT.format(temp.B_LINK, message.from_user.id, message.from_user.mention))
     if len(message.command) == 1:
