@@ -257,8 +257,16 @@ class Database:
         user = await self.get_user_data(user_id)
         return user.get('referral_count', 0) if user else 0
 
-    async def grant_referral_access(self, user_id):
-        # Updates the main user collection (self.col)
+        async def grant_referral_access(self, user_id):
+        # Grant 1 month (30 days) of premium access
+        expiry_time = datetime.datetime.now() + datetime.timedelta(days=30)
+        user_data = {"id": int(user_id), "expiry_time": expiry_time}
+        
+        # This function updates the premium collection (self.users)
+        await self.update_user(user_data) 
+        
+        # We also set the flag in the main collection (self.col)
+        # to prevent this from being triggered again
         await self.col.update_one({'id': int(user_id)}, {'$set': {'referral_access': True}})
 
     async def check_referral_access(self, user_id):
