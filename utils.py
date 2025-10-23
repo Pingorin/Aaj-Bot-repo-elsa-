@@ -35,6 +35,7 @@ class temp(object):
     USERS_CANCEL = False
     GROUPS_CANCEL = False    
     CHAT = {}
+    START_TIME = time.time() # Bot start time
 
 async def is_req_subscribed(bot, query):
     if await db.find_join_req(query.from_user.id):
