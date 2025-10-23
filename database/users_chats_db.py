@@ -37,6 +37,7 @@ class Database:
     def new_user(self, id, name, referred_by=None):
         return dict(
             id = id,
+            referral_link = None, # <-- ADD THIS LINE
             name = name,
             ban_status=dict(
                 is_banned=False,
