@@ -97,11 +97,11 @@ Your current referral count: <b>{count} / {target}</b>
     
     REFERRAL_SUCCESS_MESSAGE = "Congrats! <b>{user_name}</b> just joined using your link.\n\nYour new referral count is <b>{count} / {target}</b>."
     
-            REFERRAL_TARGET_REACHED_MESSAGE = """Congratulations! 🥳
+            REFERRAL_TARGET_REACHED_MESSAGE = """<b>Congratulations! 🥳
 
 You've successfully referred <b>{target}</b> users. As a reward, you've been granted <b>1 Month of Free Premium Access!</b>
 
-You'll get direct access to all files without any verification until your plan expires."""
+You'll get direct access to all files without any verification until your plan expires.</b>"""
 
     FONT_TXT= """<b>ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴍᴏᴅᴇ ᴛᴏ ᴄʜᴀɴɢᴇ ʏᴏᴜʀ ꜰᴏɴᴛs sᴛʏʟᴇ, ᴊᴜsᴛ sᴇɴᴅ ᴍᴇ ʟɪᴋᴇ ᴛʜɪs ꜰᴏʀᴍᴀᴛ
 
