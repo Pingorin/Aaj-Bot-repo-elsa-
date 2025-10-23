@@ -923,25 +923,35 @@ async def auto_filter(client, msg, spoll=False):
               ]
     if offset != "":
         if total_results >= 3:
-            btn.insert(0,[
+                        btn.insert(0,[
                 InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium"),
-                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}")
+            ],[
+                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
+                InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
             ])
         else:
-            btn.insert(0,[
-                InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium"),
-                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}")
+                        btn.insert(0,[
+                InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
+            ],[
+                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
+                InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
             ])
     else:
         if total_results >= 3:
-            btn.insert(0,[
+                        btn.insert(0,[
                 InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
+            ],[
+                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
+                InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
             ])
         else:
-            btn.insert(0,[
+                        btn.insert(0,[
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
+            ],[
+                InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
+                InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
             ])
         
     # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
