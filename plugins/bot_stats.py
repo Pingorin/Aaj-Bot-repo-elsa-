@@ -92,7 +92,7 @@ async def get_ststs(bot, message):
     files = await Media.count_documents()
     db2_size = get_size(await get_files_db_size())
     db2_free = get_size(536870912)
-    uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - time.time()))
+        uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - temp.START_TIME))
     ram = psutil.virtual_memory().percent
     cpu = psutil.cpu_percent()
     await message.reply_text(script.STATUS_TXT.format(users, groups, size, free, files, db2_size, db2_free, uptime, ram, cpu))
