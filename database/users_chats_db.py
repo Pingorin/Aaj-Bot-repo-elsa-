@@ -270,5 +270,12 @@ class Database:
         # Checks the main user collection (self.col)
         user = await self.get_user_data(user_id)
         return user.get('referral_count', 0) if user else 0
+    # --- ADD THESE TWO NEW FUNCTIONS ---
+    async def set_referral_link(self, user_id, link):
+        await self.col.update_one({'id': int(user_id)}, {'$set': {'referral_link': link}})
+
+    async def get_referrer_by_link(self, link):
+        user = await self.col.find_one({'referral_link': link})
+        return user
 
 db = Database()
