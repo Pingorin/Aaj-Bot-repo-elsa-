@@ -139,7 +139,11 @@ async def next_page(bot, query):
     btn.append(
         [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
     )
-
+    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
+    btn.append(
+        [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
+    )
+ 
     if 0 < offset <= int(MAX_BTN):
         off_set = 0
     elif offset == 0:
@@ -247,6 +251,10 @@ async def lang_search(client: Client, query: CallbackQuery):
     # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
     btn.append(
         [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
+    )
+    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
+    btn.append(
+        [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
     )
 
     if n_offset== '':
