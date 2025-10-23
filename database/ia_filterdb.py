@@ -59,29 +59,53 @@ async def save_file(media):
             print(f'{getattr(media, "file_name", "NO_FILE")} is saved to database')
             return 'suc'
 
-async def get_search_results(query, max_results=MAX_BTN, offset=0, lang=None):
+async def get_search_results(query, max_results=MAX_BTN, offset=0, lang=None, quality=None):
     query = query.strip()
     if not query:
         raw_pattern = '.'
     elif ' ' not in query:
-        raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
+        raw_pattern = r'(\b|[\.\+\-_])' + re.escape(query) + r'(\b|[\.\+\-_])'
     else:
         raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]') 
+    
     try:
         regex = re.compile(raw_pattern, flags=re.IGNORECASE)
     except:
         regex = query
+
     filter = {'file_name': regex}
     cursor = Media.find(filter)
     cursor.sort('$natural', -1)
+
+    # --- NEW: Quality Filter Logic ---
+    if quality:
+        quality = quality.strip()
+        # Filter files that match both the query AND the quality
+        quality_files = [
+            file async for file in cursor 
+            if re.search(r'\b' + re.escape(quality) + r'\b', file.file_name, re.IGNORECASE)
+        ]
+        files = quality_files[offset:][:max_results]
+        total_results = len(quality_files)
+        next_offset = offset + max_results
+        if next_offset >= total_results:
+            next_offset = ''
+        return files, next_offset, total_results
+    
+    # --- Language Filter Logic ---
     if lang:
-        lang_files = [file async for file in cursor if lang in file.file_name.lower()]
+        lang_files = [
+            file async for file in cursor 
+            if re.search(r'\b' + re.escape(lang) + r'\b', file.file_name, re.IGNORECASE)
+        ]
         files = lang_files[offset:][:max_results]
         total_results = len(lang_files)
         next_offset = offset + max_results
         if next_offset >= total_results:
             next_offset = ''
         return files, next_offset, total_results
+
+    # --- Default Logic ---
     cursor.skip(offset).limit(max_results)
     files = await cursor.to_list(length=max_results)
     total_results = await Media.count_documents(filter)
