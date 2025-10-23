@@ -78,4 +78,4 @@ LINK_MODE = is_enabled('LINK_MODE', True)
 REFERRAL_TARGET = int(environ.get('REFERRAL_TARGET', '2')) # Number of referrals required
 # --- ADD THIS LINE ---
 # This must be the ID of your main group (e.g., your SUPPORT_GROUP ID)
-REFERRAL_GROUP_ID = int(environ.get('REFERRAL_GROUP_ID', '-1001857065489'))
+REFERRAL_GROUP_ID = int(environ.get('REFERRAL_GROUP_ID', '-1003196580448'))
