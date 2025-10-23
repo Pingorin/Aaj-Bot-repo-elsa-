@@ -920,6 +920,10 @@ async def auto_filter(client, msg, spoll=False):
     btn.append(
         [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
     )
+    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
+    btn.append(
+        [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
+    )
                              
     if spoll:
         m = await msg.message.edit(f"<b><code>{search}</code> ɪs ꜰᴏᴜɴᴅ ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ꜰᴏʀ ꜰɪʟᴇs 📫</b>")
