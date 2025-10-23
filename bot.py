@@ -27,9 +27,9 @@ class Bot(Client):
             plugins={"root": "plugins"}
         )
         
-        async def start(self):
+    async def start(self):
+        # ⬇️ FIX: All code below this line (inside the 'start' function) must be indented.
         st = time.time()
-        temp.START_TIME = st # Save the actual start time
         b_users, b_chats = await db.get_banned()
         temp.BANNED_USERS = b_users
         temp.BANNED_CHATS = b_chats
@@ -59,6 +59,7 @@ class Bot(Client):
             await self.send_message(chat_id=admin, text=f"<b>✅ ʙᴏᴛ ʀᴇsᴛᴀʀᴛᴇᴅ\n🕥 ᴛɪᴍᴇ ᴛᴀᴋᴇɴ - <code>{seconds} sᴇᴄᴏɴᴅs</code></b>")
 
     async def stop(self, *args):
+        # This code is correctly indented
         await super().stop()
         print("Bot stopped.")
     
@@ -91,6 +92,7 @@ class Bot(Client):
                 for message in app.iter_messages("pyrogram", 1, 15000):
                     print(message.text)
         """
+        # This code is also correctly indented
         current = offset
         while True:
             new_diff = min(200, limit - current)
@@ -103,3 +105,4 @@ class Bot(Client):
 
 app = Bot()
 app.run()
+        
