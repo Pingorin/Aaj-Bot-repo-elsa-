@@ -462,6 +462,20 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
+    # ⬇️ ADD THIS ENTIRE BLOCK BACK ⬇️
+    elif query.data == "buy_premium":
+        btn = [[
+            InlineKeyboardButton('📸 sᴇɴᴅ sᴄʀᴇᴇɴsʜᴏᴛ 📸', url=USERNAME)
+        ],[
+            InlineKeyboardButton('🗑 ᴄʟᴏsᴇ 🗑', callback_data='close_data')
+        ]]
+        reply_markup = InlineKeyboardMarkup(btn)
+        await query.message.reply_photo(
+            photo=(QR_CODE),
+            caption=script.PREMIUM_TEXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
 
     # ⬇️ This 'elif' must be aligned with the 'elif' blocks above it ⬇️
     elif query.data == "referral":
