@@ -451,36 +451,37 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    elif query.data == "referral":
-    try:
-        user_data = await db.get_user_data(query.from_user.id)
-        referral_link = user_data.get('referral_link')
-
-        if not referral_link:
-            new_link = await client.create_chat_invite_link(
-                chat_id=REFERRAL_GROUP_ID,
-                name=f"ref_{query.from_user.id}" # Store referrer ID in the link name
+      elif query.data == "referral":
+        # ⬇️ FIX: This 'try' block and all its contents must be indented ⬇️
+        try:
+            user_data = await db.get_user_data(query.from_user.id)
+            referral_link = user_data.get('referral_link')
+            
+            if not referral_link:
+                new_link = await client.create_chat_invite_link(
+                    chat_id=REFERRAL_GROUP_ID,
+                    name=f"ref_{query.from_user.id}" # Store referrer ID in the link name
+                )
+                referral_link = new_link.invite_link
+                await db.set_referral_link(query.from_user.id, referral_link)
+            
+            referral_count = user_data.get('referral_count', 0)
+            
+            await query.message.edit_text(
+                text=script.REFERRAL_INFO_TEXT.format(
+                    link=referral_link,
+                    count=referral_count,
+                    target=REFERRAL_TARGET
+                ),
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
+                disable_web_page_preview=True,
+                parse_mode=enums.ParseMode.HTML
             )
-            referral_link = new_link.invite_link
-            await db.set_referral_link(query.from_user.id, referral_link)
-
-        referral_count = user_data.get('referral_count', 0)
-
-        await query.message.edit_text(
-            text=script.REFERRAL_INFO_TEXT.format(
-                link=referral_link,
-                count=referral_count,
-                target=REFERRAL_TARGET
-            ),
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
-            disable_web_page_preview=True,
-            parse_mode=enums.ParseMode.HTML
-        )
-    except ChatAdminRequired:
-        await query.answer("Error: I am not an admin in the referral group or I don't have permission to create invite links.", show_alert=True)
-    except Exception as e:
-        logging.error(f"Error in referral callback: {e}")
-        await query.answer("An error occurred. Please try again later.", show_alert=True)
+        except ChatAdminRequired:
+            await query.answer("Error: I am not an admin in the referral group or I don't have permission to create invite links.", show_alert=True)
+        except Exception as e:
+            logging.error(f"Error in referral callback: {e}")
+            await query.answer("An error occurred. Please try again later.", show_alert=True)
 
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
                 disable_web_page_preview=True,
