@@ -1020,9 +1020,10 @@ async def auto_filter(client, msg, spoll=False):
     else:
         btn = [[InlineKeyboardButton(text=f"🔗 {get_size(file.file_size)}≽ {get_name(file.file_name)}", url=f'https://telegram.dog/{temp.U_NAME}?start=file_{message.chat.id}_{file.file_id}'),]
                for file in files
-              ]
-    if offset != "":
-        if total_results >= 3:
+              ]  
+    if offset != "": # Check alignment of this 'if'
+        if total_results >= 3: # Check alignment of this 'if'
+            # ⬇️ FIX: Ensure these insert calls are aligned like this ⬇️
             btn.insert(0, [
                 InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
                 InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
@@ -1031,7 +1032,8 @@ async def auto_filter(client, msg, spoll=False):
                 InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium"),
             ])
-        else:
+        else: # Check alignment of this 'else'
+            # ⬇️ FIX: Ensure these insert calls are aligned like this ⬇️
             btn.insert(0, [
                 InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
                 InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
@@ -1039,9 +1041,10 @@ async def auto_filter(client, msg, spoll=False):
             btn.insert(0, [
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
             ])
-    else:
-        if total_results >= 3:
-           btn.insert(0, [
+    else: # Check alignment of this 'else'
+        if total_results >= 3: # Check alignment of this 'if'
+            # ⬇️ FIX: Ensure these insert calls are aligned like this ⬇️
+            btn.insert(0, [
                 InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
                 InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
             ])
@@ -1049,7 +1052,8 @@ async def auto_filter(client, msg, spoll=False):
                 InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
             ])
-       else:
+        else: # Check alignment of this 'else'
+             # ⬇️ FIX: Ensure these insert calls are aligned like this ⬇️
             btn.insert(0, [
                 InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
                 InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
@@ -1058,12 +1062,11 @@ async def auto_filter(client, msg, spoll=False):
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
             ])
 
-        
-    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
+    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️ (Ensure alignment with the if/else block above)
     btn.append(
         [InlineKeyboardButton("🤔 ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ 🤔", url=settings['tutorial'])]
     )
-    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️
+    # ⬇️ ADD THIS NEW BUTTON ROW ⬇️ (Ensure alignment)
     btn.append(
         [InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')]
     )
