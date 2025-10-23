@@ -97,7 +97,7 @@ Your current referral count: <b>{count} / {target}</b>
     
     REFERRAL_SUCCESS_MESSAGE = "Congrats! <b>{user_name}</b> just joined using your link.\n\nYour new referral count is <b>{count} / {target}</b>."
     
-        REFERRAL_TARGET_REACHED_MESSAGE = """Congratulations! 🥳
+            REFERRAL_TARGET_REACHED_MESSAGE = """Congratulations! 🥳
 
 You've successfully referred <b>{target}</b> users. As a reward, you've been granted <b>1 Month of Free Premium Access!</b>
 
