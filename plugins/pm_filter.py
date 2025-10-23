@@ -452,22 +452,44 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
         )
     elif query.data == "referral":
-        try:
-            referral_count = await db.get_referral_count(query.from_user.id)
-            referral_link = f"https://t.me/{temp.U_NAME}?start=ref_{query.from_user.id}"
-            await query.message.edit_text(
-                text=script.REFERRAL_INFO_TEXT.format(
-                    link=referral_link,
-                    count=referral_count,
-                    target=REFERRAL_TARGET
-                ),
+    try:
+        # Check if user already has a link
+        user_data = await db.get_user_data(query.from_user.id)
+        referral_link = user_data.get('referral_link')
+
+        if not referral_link:
+            # User doesn't have a link, so we create one
+            # Bot MUST be admin in REFERRAL_GROUP_ID with can_invite_users permission
+            new_link = await client.create_chat_invite_link(
+                chat_id=REFERRAL_GROUP_ID,
+                name=f"ref_{query.from_user.id}" # Store referrer ID in the link name
+            )
+            referral_link = new_link.invite_link
+            # Save the new link to the user's DB record
+            await db.set_referral_link(query.from_user.id, referral_link)
+
+        referral_count = user_data.get('referral_count', 0)
+
+        await query.message.edit_text(
+            text=script.REFERRAL_INFO_TEXT.format(
+                link=referral_link,
+                count=referral_count,
+                target=REFERRAL_TARGET
+            ),
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
+            disable_web_page_preview=True,
+            parse_mode=enums.ParseMode.HTML
+        )
+    except ChatAdminRequired:
+        await query.answer("Error: I am not an admin in the referral group or I don't have permission to create invite links.", show_alert=True)
+    except Exception as e:
+        logging.error(f"Error in referral callback: {e}")
+        await query.answer("An error occurred. Please try again later.", show_alert=True)
+
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
                 disable_web_page_preview=True,
                 parse_mode=enums.ParseMode.HTML
             )
-        except Exception as e:
-            logging.error(f"Error in referral callback: {e}")
-            await query.answer("An error occurred. Please try again later.", show_alert=True)
 
     elif query.data == "all_files_delete":
         files = await Media.count_documents()
