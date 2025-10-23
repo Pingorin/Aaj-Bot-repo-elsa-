@@ -399,6 +399,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('⚙ ꜰᴇᴀᴛᴜʀᴇs', callback_data='features'),
             InlineKeyboardButton('💸 ᴘʀᴇᴍɪᴜᴍ', callback_data='buy_premium')
         ],[
+            # ⬇️ ADD THIS NEW LINE ⬇️
+            InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')
+        ],[
             InlineKeyboardButton('🚫 ᴇᴀʀɴ ᴍᴏɴᴇʏ ᴡɪᴛʜ ʙᴏᴛ 🚫', callback_data='earn')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
