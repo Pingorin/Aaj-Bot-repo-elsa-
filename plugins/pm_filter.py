@@ -451,12 +451,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-      elif query.data == "referral":
-        # ⬇️ FIX: This 'try' block and all its contents must be indented ⬇️
+
+    # ⬇️ This 'elif' must be aligned with the 'elif' blocks above it ⬇️
+    elif query.data == "referral":
+        # ⬇️ This 'try' block must be indented *inside* the 'elif' ⬇️
         try:
             user_data = await db.get_user_data(query.from_user.id)
             referral_link = user_data.get('referral_link')
-            
+
             if not referral_link:
                 new_link = await client.create_chat_invite_link(
                     chat_id=REFERRAL_GROUP_ID,
@@ -464,9 +466,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 )
                 referral_link = new_link.invite_link
                 await db.set_referral_link(query.from_user.id, referral_link)
-            
+
             referral_count = user_data.get('referral_count', 0)
-            
+
             await query.message.edit_text(
                 text=script.REFERRAL_INFO_TEXT.format(
                     link=referral_link,
@@ -483,12 +485,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             logging.error(f"Error in referral callback: {e}")
             await query.answer("An error occurred. Please try again later.", show_alert=True)
 
-                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⋞ ʙᴀᴄᴋ", callback_data='start')]]),
-                disable_web_page_preview=True,
-                parse_mode=enums.ParseMode.HTML
-            )
-
-    elif query.data == "all_files_delete":
+    # This is the next block, make sure it's also aligned
+    elif query.data.startswith("all_files_delete"):
         files = await Media.count_documents()
         await query.answer('Deleting...')
         await Media.collection.drop()
