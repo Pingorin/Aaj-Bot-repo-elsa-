@@ -75,11 +75,12 @@ async def start(client:Client, message):
             InlineKeyboardButton('⚙ ꜰᴇᴀᴛᴜʀᴇs', callback_data='features'),
             InlineKeyboardButton('💸 ᴘʀᴇᴍɪᴜᴍ', callback_data='buy_premium')
         ],[
-            InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral') # <-- New Button
+            # ⬇️ ADD THIS NEW LINE ⬇️
+            InlineKeyboardButton(script.REFERRAL_BUTTON_TEXT, callback_data='referral')
         ],[
             InlineKeyboardButton('🚫 ᴇᴀʀɴ ᴍᴏɴᴇʏ ᴡɪᴛʜ ʙᴏᴛ 🚫', callback_data='earn')
-        ]]   
-        reply_markup = InlineKeyboardMarkup(buttons)
+        ]]
+        reply_markup = InlineKeyboardMarkup(buttons)     
         await message.reply_text(script.START_TXT.format(message.from_user.mention, get_status(), message.from_user.id),
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
