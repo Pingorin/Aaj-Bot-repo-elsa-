@@ -347,7 +347,7 @@ async def quality_search(client: Client, query: CallbackQuery):
         
     btn.insert(0, [
             InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ ♻️", callback_data=batch_link),
-            InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https{temp.U_NAME}?start=buy_premium")
+            InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
         ])
 
     btn.append(
