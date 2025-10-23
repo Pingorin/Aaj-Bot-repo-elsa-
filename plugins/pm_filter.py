@@ -1023,7 +1023,6 @@ async def auto_filter(client, msg, spoll=False):
               ]
     if offset != "":
         if total_results >= 3:
-                                    # Insert the second row first (at index 0)
             btn.insert(0, [
                 InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"),
                 InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
