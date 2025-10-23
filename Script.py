@@ -81,8 +81,9 @@ User - {}"""
     
     CUDNT_FND = """🤧 𝗛𝗲𝗹𝗹𝗼 {}
 
-𝗜 𝗰𝗼𝘂𝗹𝗱𝗻'𝘁 𝗳𝗶𝗻𝗱 𝗮𝗻𝘆𝘁𝗵𝗶𝗻𝗴 𝗿𝗲𝗹𝗮𝘁𝗲𝗱 𝘁𝗼 𝘁𝗵𝗮𝘁 𝗱𝗶𝗱 𝘆𝗼𝘂 𝗺𝗲𝗮𝗻 𝗮𝗻𝘆 𝗼𝗻𝗲 𝗼𝗳 𝘁𝗵𝗲𝘀𝗲 ?? 👇"""
-  
+𝗜 𝗰𝗼𝘂𝗹𝗱𝗻'ᴛ 𝗳𝗶𝗻𝗱 𝗮𝗻𝘆𝘁𝗵𝗶𝗻𝗴 𝗿𝗲𝗹𝗮𝘁𝗲𝗱 𝘁𝗼 𝘁𝗵𝗮𝘁 𝗱𝗶𝗱 𝘆𝗼𝘂 𝗺𝗲𝗮𝗻 𝗮𝗻𝘆 𝗼𝗻𝗲 𝗼𝗳 ᴛʜᴇsᴇ ?? 👇"""
+    
+    # ⬇️ FIX: Make sure all these variables are indented exactly like this (4 spaces) ⬇️
     REFERRAL_BUTTON_TEXT = "🔗 ʀᴇғᴇʀ & ᴇᴀʀɴ"
     
     REFERRAL_INFO_TEXT = """<b>Invite your friends and earn direct file access! 🥳</b>
@@ -97,11 +98,12 @@ Your current referral count: <b>{count} / {target}</b>
     
     REFERRAL_SUCCESS_MESSAGE = "Congrats! <b>{user_name}</b> just joined using your link.\n\nYour new referral count is <b>{count} / {target}</b>."
     
-            REFERRAL_TARGET_REACHED_MESSAGE = """<b>Congratulations! 🥳
+    # This was line 100. It must be indented just like the variables above.
+    REFERRAL_TARGET_REACHED_MESSAGE = """Congratulations! 🥳
 
 You've successfully referred <b>{target}</b> users. As a reward, you've been granted <b>1 Month of Free Premium Access!</b>
 
-You'll get direct access to all files without any verification until your plan expires.</b>"""
+You'll get direct access to all files without any verification until your plan expires."""
 
     FONT_TXT= """<b>ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴍᴏᴅᴇ ᴛᴏ ᴄʜᴀɴɢᴇ ʏᴏᴜʀ ꜰᴏɴᴛs sᴛʏʟᴇ, ᴊᴜsᴛ sᴇɴᴅ ᴍᴇ ʟɪᴋᴇ ᴛʜɪs ꜰᴏʀᴍᴀᴛ
 
