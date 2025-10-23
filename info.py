@@ -79,3 +79,5 @@ REFERRAL_TARGET = int(environ.get('REFERRAL_TARGET', '2')) # Number of referrals
 # --- ADD THIS LINE ---
 # This must be the ID of your main group (e.g., your SUPPORT_GROUP ID)
 REFERRAL_GROUP_ID = int(environ.get('REFERRAL_GROUP_ID', '-1003196580448'))
+# List of qualities for the filter button
+QUALITIES = ["480p", "720p", "1080p", "2160p"]
