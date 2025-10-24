@@ -55,6 +55,10 @@ auth_channel = environ.get('AUTH_CHANNEL', '-1003010434974')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 
+# Enable/Disable Join Request Forcesub (True = Enabled)
+JOIN_REQUEST_FSUB = is_enabled(environ.get('JOIN_REQUEST_FSUB', 'True'))
+# --------------------
+
 # hastags request features
 request_channel = environ.get('REQUEST_CHANNEL', '-1003140956750')
 REQUEST_CHANNEL = int(request_channel) if request_channel and id_pattern.search(request_channel) else None
