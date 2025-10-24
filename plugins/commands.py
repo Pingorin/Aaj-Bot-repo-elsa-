@@ -14,7 +14,7 @@ from database.users_chats_db import db
 from info import (ADMINS, LOG_CHANNEL, USERNAME, VERIFY_IMG, IS_VERIFY, FILE_CAPTION,
                   AUTH_CHANNEL, SHORTENER_WEBSITE, SHORTENER_API, SHORTENER_WEBSITE2,
                   SHORTENER_API2, LOG_API_CHANNEL, TWO_VERIFY_GAP, QR_CODE,
-                  DELETE_TIME, REFERRAL_TARGET, JOIN_REQUEST_FSUB) # Added JOIN_REQUEST_FSUB
+                  DELETE_TIME, REFERRAL_TARGET, JOIN_REQUEST_FSUB, AUTH_CHANNEL_2, JOIN_REQUEST_FSUB_2) ) 
 from utils import get_settings, save_group_settings, is_req_subscribed, get_size, get_shortlink, is_check_admin, get_status, temp, get_readable_time
 from pyrogram.errors import ChatAdminRequired # Added ChatAdminRequired
 import re
