@@ -281,11 +281,6 @@ class Database:
         user = await self.get_user_data(user_id)
         return user.get('referral_count', 0) if user else 0
 
-    # ... (inside Database class, after get_referral_count) ...
-    async def get_referral_count(self, user_id):
-        user = await self.get_user_data(user_id)
-        return user.get('referral_count', 0) if user else 0
-
     # --- ADD THIS NEW FUNCTION ---
     async def has_requested_join(self, user_id):
         # Check if user_id exists in the requests collection (self.req)
