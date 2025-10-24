@@ -286,5 +286,10 @@ class Database:
     async def has_requested_join(self, user_id):
         # Check if user_id exists in the requests collection (self.req)
         return bool(await self.req.find_one({'id': int(user_id)}))
-    
+
+    # --- ADD THIS NEW FUNCTION ---
+    async def has_requested_join_2(self, user_id):
+        # Check the second request collection
+        return bool(await self.req2.find_one({'id': int(user_id)}))
+    # ---------------------------       
 db = Database()
