@@ -29,6 +29,19 @@ BUTTONS = {}
 FILES_ID = {}
 CAP = {}
 
+# --- Status Update Handlers (Simplified) ---
+async def update_request_status(query: CallbackQuery, client: Client, status_text: str, alert_text: str, status_emoji: str):
+    # ... (all the code for this function) ...
+    except Exception as e:
+        logging.error(f"Error in {query.data.split('#')[0]} callback: {e}") # Use ident for logging
+        await query.answer("An error occurred.", show_alert=True)
+
+# --- Alert Handlers (User clicking the final status button) ---
+async def final_status_alert(query: CallbackQuery, alert_text: str):
+    # ... (all the code for this function) ...
+    else:
+        await query.answer("This is the final status set by an admin.", show_alert=False) # Generic message for others
+
 @Client.on_message(filters.private & filters.text & filters.incoming)
 async def pm_search(client, message):
     if IS_PM_SEARCH:
