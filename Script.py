@@ -48,6 +48,15 @@ User - {}"""
 📇 ɪᴅ - <code>{}</code>
 
 🎁 ʀᴇǫᴜᴇꜱᴛ ᴍꜱɢ - <code>{}</code></b>"""  
+
+    # --- ADD THIS NEW TEXT VARIABLE ---
+    JOIN_REQUEST_TEXT = """<b>❗ Access Denied ❗</b>
+
+You must first request to join our backup channel to access files.
+
+1️⃣ Click the <b>'➡️ Send Join Request'</b> button below.
+2️⃣ Wait for an admin to approve your request.
+3️⃣ Once approved, click the <b>'🔄 Try Again'</b> button."""
     
     IMDB_TEMPLATE_TXT = """<b>📻 ᴛɪᴛʟᴇ - <a href={url}>{title}</a>
 🎭 ɢᴇɴʀᴇs - {genres}
