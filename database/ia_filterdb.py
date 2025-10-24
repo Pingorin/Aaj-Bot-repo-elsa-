@@ -59,61 +59,76 @@ async def save_file(media):
             print(f'{getattr(media, "file_name", "NO_FILE")} is saved to database')
             return 'suc'
 
-async def get_search_results(query, max_results=MAX_BTN, offset=0, lang=None, quality=None):
+async def get_search_results(query, max_results=MAX_BTN, offset=0, lang=None, quality=None, year=None, extract_years=False, year_extract_limit=100):
     query = query.strip()
+    # Basic query regex
     if not query:
         raw_pattern = '.'
     elif ' ' not in query:
-        raw_pattern = r'(\b|[\.\+\-_])' + re.escape(query) + r'(\b|[\.\+\-_])'
+        # Match word boundaries more reliably for single words
+        raw_pattern = r'(?:^|\W|\b)' + re.escape(query) + r'(?:$|\W|\b)'
     else:
-        raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]') 
-    
+        # Allow spaces or dots/hyphens/underscores between words
+        raw_pattern = r'\b' + query.replace(' ', r'.*[\s.\-_\+].*') + r'\b'
+
     try:
         regex = re.compile(raw_pattern, flags=re.IGNORECASE)
-    except:
-        regex = query
+    except Exception as e:
+        logging.error(f"Regex compilation failed for '{raw_pattern}': {e}")
+        # Fallback to simple contains check if regex fails (less accurate)
+        filter_query = {'file_name': {'$regex': re.escape(query), '$options': 'i'}}
+        regex = None # Indicate regex failed
+    else:
+        filter_query = {'file_name': regex}
 
-    filter = {'file_name': regex}
-    cursor = Media.find(filter)
-    cursor.sort('$natural', -1)
+    # --- Initial Fetch for Year Extraction (if requested) ---
+    unique_years = []
+    if extract_years:
+        cursor_for_years = Media.find(filter_query).limit(year_extract_limit)
+        found_years = set()
+        year_pattern = re.compile(r'\b(19[89]\d|20[0-3]\d)\b') # Find years 1980-2039
+        async for file in cursor_for_years:
+            matches = year_pattern.findall(file.file_name)
+            if matches:
+                found_years.update(matches) # Add all found years to the set
+        if found_years:
+            # Sort years numerically, descending
+            unique_years = sorted(list(found_years), key=int, reverse=True)
 
-    # --- NEW: Quality Filter Logic ---
-    if quality:
-        quality = quality.strip()
-        # Filter files that match both the query AND the quality
-        quality_files = [
-            file async for file in cursor 
-            if re.search(r'\b' + re.escape(quality) + r'\b', file.file_name, re.IGNORECASE)
-        ]
-        files = quality_files[offset:][:max_results]
-        total_results = len(quality_files)
-        next_offset = offset + max_results
-        if next_offset >= total_results:
-            next_offset = ''
-        return files, next_offset, total_results
+    # --- Main Query & Filtering ---
+    cursor = Media.find(filter_query)
+    cursor.sort('$natural', -1) # Sort newest first generally
+
+    # Apply filters iteratively in Python (more flexible than complex DB queries)
+    filtered_files = []
+    async for file in cursor:
+        file_name_lower = file.file_name.lower()
+        
+        # Year Filter
+        if year and not re.search(r'\b' + re.escape(str(year)) + r'\b', file.file_name):
+            continue # Skip if year doesn't match
+            
+        # Quality Filter
+        if quality and not re.search(r'\b' + re.escape(quality.strip()) + r'\b', file_name_lower):
+            continue # Skip if quality doesn't match
+            
+        # Language Filter
+        if lang and not re.search(r'\b' + re.escape(lang.strip()) + r'\b', file_name_lower):
+             continue # Skip if language doesn't match
+
+        filtered_files.append(file)
+
+    # --- Pagination ---
+    total_results = len(filtered_files)
+    files_on_page = filtered_files[offset : offset + max_results]
     
-    # --- Language Filter Logic ---
-    if lang:
-        lang_files = [
-            file async for file in cursor 
-            if re.search(r'\b' + re.escape(lang) + r'\b', file.file_name, re.IGNORECASE)
-        ]
-        files = lang_files[offset:][:max_results]
-        total_results = len(lang_files)
-        next_offset = offset + max_results
-        if next_offset >= total_results:
-            next_offset = ''
-        return files, next_offset, total_results
-
-    # --- Default Logic ---
-    cursor.skip(offset).limit(max_results)
-    files = await cursor.to_list(length=max_results)
-    total_results = await Media.count_documents(filter)
     next_offset = offset + max_results
     if next_offset >= total_results:
-        next_offset = ''       
-    return files, next_offset, total_results
-    
+        next_offset = '' # No more pages
+
+    # Return extracted years only if requested initially
+    return files_on_page, next_offset, total_results, (unique_years if extract_years else None)
+
 async def get_bad_files(query, file_type=None, offset=0, filter=False):
     query = query.strip()
     if not query:
