@@ -33,6 +33,7 @@ class Database:
         self.verify_id = mydb.verify_id
         self.users = mydb.uersz
         self.req = mydb.requests
+        self.req2 = mydb.requests2 # <-- ADD THIS LINE for second request collection
 
     def new_user(self, id, name, referred_by=None):
         return dict(
