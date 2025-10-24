@@ -56,8 +56,7 @@ AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_chan
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 
 # Enable/Disable Join Request Forcesub (True = Enabled)
-JOIN_REQUEST_FSUB = is_enabled(environ.get('JOIN_REQUEST_FSUB', 'True'))
-# --------------------
+JOIN_REQUEST_FSUB = is_enabled(environ.get('JOIN_REQUEST_FSUB', 'True'), True) # <-- Added ', True' as the default
 
 # hastags request features
 request_channel = environ.get('REQUEST_CHANNEL', '-1003140956750')
