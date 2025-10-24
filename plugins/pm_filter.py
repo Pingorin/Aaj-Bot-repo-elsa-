@@ -211,11 +211,12 @@ async def next_page(bot, query):
         btn = [[InlineKeyboardButton(text=f"🔗 {get_size(file.file_size)}≽ {get_name(file.file_name)}", url=f'https://telegram.dog/{temp.U_NAME}?start=file_{query.message.chat.id}_{file.file_id}'),]
                 for file in files
               ]
-
-    # FIX: Insert buttons correctly
+      
+      # FIX: Insert buttons correctly
     btn.insert(0, [
         InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#{offset}#{req}"),
-        InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}")
+        InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}"),
+        InlineKeyboardButton("🗓️ ʏᴇᴀʀ", callback_data=f"years#{key}#{offset}#{req}") # <-- ADD THIS
     ])
     btn.insert(0, [
         InlineKeyboardButton("♻️ sᴇɴᴅ ᴀʟʟ", callback_data=batch_link),
@@ -1093,8 +1094,9 @@ async def auto_filter(client, msg, spoll=False):
     # --- Insert Top Buttons ---
     filter_buttons = []
     if total_results > 0:
-        filter_buttons.append(InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"))
-        filter_buttons.append(InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}"))
+         filter_buttons.append(InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#0#{req}"))
+         filter_buttons.append(InlineKeyboardButton("🎞️ ǫᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}"))
+         filter_buttons.append(InlineKeyboardButton("🗓️ ʏᴇᴀʀ", callback_data=f"years#{key}#0#{req}")) # <-- ADD THIS
     if filter_buttons:
         btn.insert(0, filter_buttons)
 
