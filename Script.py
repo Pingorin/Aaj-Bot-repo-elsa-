@@ -105,6 +105,10 @@ You've successfully referred <b>{target}</b> users. As a reward, you've been gra
 
 You'll get direct access to all files without any verification until your plan expires."""
 
+    YEAR_SELECT_PROMPT = "Select the release year: 👇"
+    NO_YEARS_FOUND = "Could not identify specific release years in these search results."
+    YEAR_FILTER_NOT_FOUND = "Sorry, no files found matching the year '{year}'. 😕"
+ 
     FONT_TXT= """<b>ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴍᴏᴅᴇ ᴛᴏ ᴄʜᴀɴɢᴇ ʏᴏᴜʀ ꜰᴏɴᴛs sᴛʏʟᴇ, ᴊᴜsᴛ sᴇɴᴅ ᴍᴇ ʟɪᴋᴇ ᴛʜɪs ꜰᴏʀᴍᴀᴛ
 
 <code>/font hi how are you</code></b>"""
