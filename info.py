@@ -51,13 +51,13 @@ TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "600"))
 # languages search
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam"]
 
-auth_channel = environ.get('AUTH_CHANNEL', '-1003010434974')
+auth_channel = environ.get('AUTH_CHANNEL', '-1003244733972')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 JOIN_REQUEST_FSUB = is_enabled(environ.get('JOIN_REQUEST_FSUB', 'True'), True)
 
 # --- ADD THESE LINES FOR SECOND CHANNEL ---
-auth_channel_2 = environ.get('AUTH_CHANNEL_2', '-1003105162989') # Add ID of the second channel here (e.g., '-100...')
+auth_channel_2 = environ.get('AUTH_CHANNEL_2', '-1003295790341') # Add ID of the second channel here (e.g., '-100...')
 AUTH_CHANNEL_2 = int(auth_channel_2) if auth_channel_2 and id_pattern.search(auth_channel_2) else None
 JOIN_REQUEST_FSUB_2 = is_enabled(environ.get('JOIN_REQUEST_FSUB_2', 'False'), False) # Disabled by default
 # Enable/Disable Join Request Forcesub (True = Enabled)
