@@ -54,7 +54,7 @@ QUALITIES = ["480p", "720p", "1080p", "2160p"] # Add/remove qualities as needed
 # --- Force Subscribe (Join Request) ---
 auth_channel = environ.get('AUTH_CHANNEL', '-1003244733972') # Your primary FSub channel ID
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
-SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1001857065489')) # Your support group ID
+SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357')) # Your support group ID
 JOIN_REQUEST_FSUB = is_enabled(environ.get('JOIN_REQUEST_FSUB', 'True'), True) # Enable first FSub?
 
 # Second Force Subscribe Channel
