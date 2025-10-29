@@ -648,27 +648,26 @@ async def cb_handler(client: Client, query: CallbackQuery):
         chat_id = int(chat_id_str)
         
         try:
-            # Check if user already has a link
+            # Check karein ki user ke paas pehle se link hai ya nahi
             user_data = await db.get_user_data(user_id)
             if not user_data:
-                # This should not happen if they are clicking buttons, but just in case
                 await db.add_user(user_id, query.from_user.first_name)
                 user_data = await db.get_user_data(user_id)
 
             referral_link = user_data.get('referral_link')
             
             if not referral_link:
-                # Create a new, permanent invite link for this user
+                # User ke liye ek naya permanent invite link banayein
                 link = await client.create_chat_invite_link(
                     chat_id=chat_id,
-                    name=f"ref_{user_id}", # Name helps you see it in group settings
+                    name=f"ref_{user_id}", # Isse aap group settings mein link pehchan payenge
                     creates_join_request=False
                 )
                 referral_link = link.invite_link
-                # Save it to the user's DB record
+                # Link ko database mein save karein
                 await db.update_referral_link(user_id, referral_link)
             
-            # Get current referral count
+            # Current referral count lein
             current_count = user_data.get('referral_count', 0)
             
             share_text = f"Join this awesome Telegram group! {referral_link}"
@@ -681,7 +680,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     target=REFERRAL_TARGET,
                     current_count=current_count
                 ),
-                # Show the group link preview
+                # Link preview dikhayein
                 disable_web_page_preview=False, 
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={encoded_share_text}")],
@@ -690,11 +689,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
         except ChatAdminRequired:
             await query.message.edit_text(
-                "I cannot create an invite link! 😢\n\n"
-                "Please make sure I am an **admin in the group** and have the **'Invite users'** permission."
+                "<b>Main invite link nahi bana pa raha hoon! 😢\n\n"
+                "Kripya check karein ki main group mein admin hoon aur mere paas 'Invite users' ki permission hai.</b>"
             )
         except Exception as e:
-            await query.message.edit_text(f"An error occurred: {e}")
+            await query.message.edit_text(f"<b>Ek error aa gaya:</b> <code>{e}</code>")
           
     elif query.data == "delallcancel":
         userid = query.from_user.id
