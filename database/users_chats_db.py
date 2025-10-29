@@ -46,7 +46,7 @@ class Database:
             ),
             referral_count=0,
             referred_by=None,
-            referral_link=None  # <-- ADD THIS
+            #referral_link=None  # <-- ADD THIS
         )
 
     async def get_settings(self, id):
