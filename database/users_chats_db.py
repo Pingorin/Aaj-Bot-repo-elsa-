@@ -43,9 +43,9 @@ class Database:
                 is_banned=False,
                 ban_reason=""
             ),
-            # Added for Referral System
             referral_count=0,
-            referred_by=None
+            referred_by=None,
+            referral_link=None  # <-- ADD THIS
         )
 
     async def get_settings(self, id):
@@ -273,6 +273,20 @@ class Database:
     async def remove_premium_access(self, user_id):
         return await self.update_one(
             {"id": user_id}, {"$set": {"expiry_time": None}}
+        )
+
+    async def get_user_data(self, user_id):
+        user = await self.col.find_one({'id': int(user_id)})
+        return user
+
+    async def get_user_by_referral_link(self, link):
+        user = await self.col.find_one({'referral_link': link})
+        return user
+
+    async def update_referral_link(self, user_id, link):
+        await self.col.update_one(
+            {'id': int(user_id)},
+            {'$set': {'referral_link': link}}
         )
 
 db = Database()
