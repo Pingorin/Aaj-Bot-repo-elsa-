@@ -720,7 +720,7 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
             if not referrer:
                 return  # Yeh normal invite link tha, referral wala nahi
 
-            referrer_id = referrer['id']
+            referrer_id = referrer['referrer_id']
             
             # 1. Self-referral check
             if new_user_id == referrer_id:
