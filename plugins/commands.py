@@ -8,7 +8,7 @@ from datetime import datetime, timedelta  # <-- ADDED timedelta
 from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait, UserIsBlocked, PeerIdInvalid
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ChatMemberUpdated
 from database.ia_filterdb import Media, get_file_details, get_bad_files, unpack_new_file_id
 from database.users_chats_db import db
 from info import (
@@ -732,7 +732,7 @@ async def set_time(client, message):
 
 # NEW FUNCTION FOR REFERRAL HANDLING
 @Client.on_chat_member_updated()
-async def welcome_handler(client: Client, member: pyrogram.types.ChatMemberUpdated):
+async def welcome_handler(client: Client, member: ChatMemberUpdated):
     try:
         # Check if a new user joined
         if (
