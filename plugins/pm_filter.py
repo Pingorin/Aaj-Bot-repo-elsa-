@@ -1,3 +1,4 @@
+import urllib.parse
 import asyncio
 import logging
 import pytz
@@ -654,6 +655,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
             
             share_text = f"Join this awesome Telegram group! {referral_link}"
             
+            # --- THIS IS THE FIX ---
+            # You must URL-encode the text for the share URL
+            encoded_share_text = urllib.parse.quote(share_text)
+            
             await query.message.edit_text(
                 text=script.REFERRAL_TXT.format(
                     user_mention=user_mention,
@@ -663,7 +668,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 ),
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={share_text}")],
+                    # Use the new 'encoded_share_text' variable here
+                    [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={encoded_share_text}")],
                     [InlineKeyboardButton("Close ❌", callback_data="close_data")]
                 ])
             )
