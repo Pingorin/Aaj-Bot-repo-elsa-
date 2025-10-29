@@ -281,13 +281,22 @@ class Database:
         return user
 
     async def get_user_by_referral_link(self, link):
-        user = await self.col.find_one({'referral_link': link})
-        return user
+    # Naye 'referral_links' collection se search karein
+    return await self.ref_links.find_one({'_id': link})
 
-    async def update_referral_link(self, user_id, link):
-        await self.col.update_one(
-            {'id': int(user_id)},
-            {'$set': {'referral_link': link}}
-        )
+async def update_referral_link(self, user_id, link, chat_id):
+    # Naye 'referral_links' collection mein link save karein
+    await self.ref_links.insert_one({
+        '_id': link, 
+        'referrer_id': user_id, 
+        'chat_id': chat_id
+    })
+
+async def get_referral_link(self, user_id, chat_id):
+    # User ka link *specific group* ke liye search karein
+    return await self.ref_links.find_one({
+        'referrer_id': user_id, 
+        'chat_id': chat_id
+    })
 
 db = Database()
