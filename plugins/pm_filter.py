@@ -135,19 +135,24 @@ async def next_page(bot, query):
         InlineKeyboardButton("📰 ʟᴀɴɢᴜᴀɢᴇs", callback_data=f"languages#{key}#{offset}#{req}")
         ])
 
-    # Add Quality button if multiple qualities exist
+        # --- Add Filter Buttons (Quality & Year) ---
+    filter_buttons = []
     available_qualities = await get_available_qualities(search)
     if len(available_qualities) > 1:
-        btn.append(
-            [InlineKeyboardButton("🎞️ Qᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}")]
+        filter_buttons.append(
+            InlineKeyboardButton("🎞️ Qᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#{offset}#{req}")
         )
-
-    # Add Year button
+    
     available_years = await get_available_years(search)
     if len(available_years) > 1:
-        btn.append(
-            [InlineKeyboardButton("📅 Yᴇᴀʀ", callback_data=f"years#{key}#{offset}#{req}")]
+        filter_buttons.append(
+            InlineKeyboardButton("📅 Yᴇᴀʀ", callback_data=f"years#{key}#{offset}#{req}")
         )
+        
+    # Add the filter row only if it has buttons
+    if filter_buttons:
+        btn.append(filter_buttons)
+    # --- End of Filter Buttons ---
 
     # Add the 'How to Download' button from settings
     btn.append(
@@ -1165,17 +1170,21 @@ async def auto_filter(client, msg, spoll=False):
                 InlineKeyboardButton("🥇ʙᴜʏ🥇", url=f"https://t.me/{temp.U_NAME}?start=buy_premium")
             ])
     
-    # Add Quality button
+    # --- Add Filter Buttons (Quality & Year) ---
+    filter_buttons = []
     if len(available_qualities) > 1:
-        btn.append(
-            [InlineKeyboardButton("🎞️ Qᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")]
+        filter_buttons.append(
+            InlineKeyboardButton("🎞️ Qᴜᴀʟɪᴛʏ", callback_data=f"qualities#{key}#0#{req}")
+        )
+    if len(available_years) > 1:
+        filter_buttons.append(
+            InlineKeyboardButton("📅 Yᴇᴀʀ", callback_data=f"years#{key}#0#{req}")
         )
     
-    # Add Year button
-    if len(available_years) > 1:
-        btn.append(
-            [InlineKeyboardButton("📅 Yᴇᴀʀ", callback_data=f"years#{key}#0#{req}")]
-        )
+    # Add the filter row only if it has buttons
+    if filter_buttons:
+        btn.append(filter_buttons)
+    # --- End of Filter Buttons ---
     
     # Add 'How to Download' button
     btn.append(
