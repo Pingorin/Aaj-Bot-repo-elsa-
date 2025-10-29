@@ -4,7 +4,7 @@ import random
 import asyncio
 import string
 import pytz
-from datetime import datetime, timedelta  # <-- ADDED timedelta
+from datetime import datetime, timedelta
 from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait, UserIsBlocked, PeerIdInvalid
@@ -15,7 +15,7 @@ from info import (
     ADMINS, LOG_CHANNEL, USERNAME, VERIFY_IMG, IS_VERIFY, FILE_CAPTION, 
     AUTH_CHANNEL, SHORTENER_WEBSITE, SHORTENER_API, SHORTENER_WEBSITE2, 
     SHORTENER_API2, LOG_API_CHANNEL, TWO_VERIFY_GAP, QR_CODE, DELETE_TIME, 
-    REQUEST_CHANNEL, REFERRAL_TARGET, PREMIUM_MONTH_DURATION  # <-- ADDED REFERRAL VARS
+    REQUEST_CHANNEL, REFERRAL_TARGET, PREMIUM_MONTH_DURATION
 )
 from utils import get_settings, save_group_settings, is_req_subscribed, get_size, get_shortlink, is_check_admin, get_status, temp, get_readable_time
 import re
@@ -30,37 +30,7 @@ async def start(client:Client, message):
     m = message
     user_id = m.from_user.id
 
-    # Handle referral link
-    if len(m.command) > 1 and m.command[1].startswith("ref_"):
-        try:
-            _, referrer_id, chat_id = m.command[1].split("_")
-            
-            if int(referrer_id) == user_id:
-                await message.reply("<b>You cannot refer yourself! 😉</b>")
-            elif await db.has_been_referred(user_id):
-                await message.reply("<b>You have already joined using a referral link.</b>")
-            else:
-                # Store the referral info
-                await db.set_referred_by(user_id, referrer_id)
-                temp.REFERRED_BY[user_id] = {"referrer_id": int(referrer_id), "chat_id": int(chat_id)}
-                
-                await message.reply(f"<b>Welcome! You've been invited by a user.\nPlease join the group to complete the referral.</b>")
-                
-                # Send the group join link
-                try:
-                    invite_link = await client.create_chat_invite_link(int(chat_id))
-                    await message.reply("<b>Click the button below to join the group:</b>",
-                        reply_markup=InlineKeyboardMarkup([
-                            [InlineKeyboardButton("Join Group", url=invite_link.invite_link)]
-                        ])
-                    )
-                except Exception as e:
-                    await message.reply(f"<b>Could not get the group link. Make sure I am an admin in the group.</b>\n\nError: <code>{e}</code>")
-                return # Stop processing 'start' command here
-
-        except Exception as e:
-            await message.reply(f"<b>Error processing referral link:</b> <code>{e}</code>")
-            # Fall through to normal start
+    # PURANA REFERRAL LOGIC HATA DIYA GAYA HAI
             
     if len(m.command) == 2 and m.command[1].startswith('notcopy'):
         _, userid, verify_id, file_id = m.command[1].split("_", 3)
@@ -139,7 +109,7 @@ async def start(client:Client, message):
                 kk, grp_id, file_id = message.command[1].split('_', 2)
                 pre = 'checksubp' if kk == 'filep' else 'checksub'
                 btn.append(
-                    [InlineKeyboardButton("♻️ ᴛʀʏ ᴀɢᴀɪɴ ♻️", callback_data=f"checksub#{file_id}")]
+                    [InlineKeyboardButton("♻️ ᴛʀʏ ᴀɢᴀɪN ♻️", callback_data=f"checksub#{file_id}")]
                 )
             except (IndexError, ValueError):
                 btn.append(
@@ -203,7 +173,7 @@ async def start(client:Client, message):
                 InlineKeyboardButton(text="✅️ ᴠᴇʀɪғʏ ✅️", url=verify),
                 InlineKeyboardButton(text="⁉️ ʜᴏᴡ ᴛᴏ ᴠᴇʀɪғʏ ⁉️", url=settings['tutorial'])
             ],[
-                InlineKeyboardButton("😁 ʙᴜʏ ꜱᴜʙꜱᴄʀɪᴘᴛɪᴏɴ - ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴠᴇʀɪғʏ 😁", callback_data='buy_premium')
+                InlineKeyboardButton("😁 ʙᴜʏ ꜱᴜʙꜱᴄʀɪᴘᴛɪᴏN - ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴠᴇʀɪғʏ 😁", callback_data='buy_premium')
             ]]
             reply_markup=InlineKeyboardMarkup(buttons)            
             msg = script.SECOND_VERIFICATION_TEXT if is_second_shortener else script.VERIFICATION_TEXT
@@ -265,7 +235,7 @@ async def start(client:Client, message):
         file_caption=files.caption
     )
     btn = [[
-        InlineKeyboardButton("✛ ᴡᴀᴛᴄʜ & ᴅᴏᴡɴʟᴏᴀᴅ ✛", callback_data=f'stream#{file_id}')
+        InlineKeyboardButton("✛ ᴡᴀᴛᴄʜ & ᴅᴏᴡɴʟᴏᴀᴅ ✛", callback_data=f'stream#{file.file_id}')
     ]]
     d=await client.send_cached_media(
         chat_id=message.from_user.id,
@@ -348,7 +318,7 @@ async def delete_all_index(bot, message):
 async def settings(client, message):
     user_id = message.from_user.id if message.from_user else None
     if not user_id:
-        return await message.reply("<b>💔 ʏᴏᴜ ᴀʀᴇ ᴀɴᴏɴʏᴍᴏᴜꜱ ᴀᴅᴍɪɴ ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ...</b>")
+        return await message.reply("<b>💔 ʏᴏᴜ ᴀʀᴇ ᴀɴᴏɴʏᴍᴏᴜꜱ ᴀᴅᴍɪN ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ...</b>")
     chat_type = message.chat.type
     if chat_type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         return await message.reply_text("<code>ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪɴ ɢʀᴏᴜᴘ.</code>")
@@ -699,7 +669,7 @@ async def all_settings(client, message):
 
 🎯 ɪᴍᴅʙ ᴛᴇᴍᴘʟᴀᴛᴇ - `{settings['template']}`
 
-📂 ꜰɪʟᴇ ᴄᴀᴘᴛɪᴏɴ - `{settings['caption']}`</b>"""
+📂 ꜰɪʟᴇ ᴄᴀᴘᴛɪᴏN - `{settings['caption']}`</b>"""
     
     btn = [[
         InlineKeyboardButton("ʀᴇꜱᴇᴛ ᴅᴀᴛᴀ", callback_data="reset_grp_data")
@@ -730,61 +700,74 @@ async def set_time(client, message):
     await save_group_settings(grp_id, 'verify_time', time)
     await message.reply_text(f"Successfully set 1st verify time for {title}\n\nTime is - <code>{time}</code>")
 
-# NEW FUNCTION FOR REFERRAL HANDLING
+# NAYA DIRECT LINK REFERRAL HANDLER
 @Client.on_chat_member_updated()
 async def welcome_handler(client: Client, member: ChatMemberUpdated):
     try:
-        # Check if a new user joined
+        # Check karein ki naya user hai aur invite link se join hua hai
         if (
-            member.new_chat_member
+            member.invite_link
+            and member.new_chat_member
             and member.new_chat_member.status in [enums.ChatMemberStatus.MEMBER, enums.ChatMemberStatus.RESTRICTED]
             and (not member.old_chat_member or member.old_chat_member.status in [enums.ChatMemberStatus.LEFT, enums.ChatMemberStatus.BANNED])
         ):
             new_user_id = member.new_chat_member.user.id
-            chat_id = member.chat.id
             
-            # Check if this user was pending referral
-            if new_user_id in temp.REFERRED_BY:
-                referral_data = temp.REFERRED_BY[new_user_id]
-                referrer_id = referral_data["referrer_id"]
+            # Invite link se referrer ko dhoondein
+            invite_link_str = member.invite_link.invite_link
+            referrer = await db.get_user_by_referral_link(invite_link_str)
+            
+            if not referrer:
+                return  # Yeh normal invite link tha, referral wala nahi
+
+            referrer_id = referrer['id']
+            
+            # 1. Self-referral check
+            if new_user_id == referrer_id:
+                return 
                 
-                # Check if they joined the correct group
-                if int(chat_id) == int(referral_data["chat_id"]):
-                    
-                    # 1. Increment referrer's count
-                    await db.increment_referral_count(referrer_id)
-                    
-                    # 2. Clean up temp data
-                    del temp.REFERRED_BY[new_user_id]
-                    
-                    # 3. Check if referrer reached the target
-                    new_count = await db.get_referral_count(referrer_id)
-                    referrer_user = await client.get_users(referrer_id)
-                    
-                    if new_count >= REFERRAL_TARGET:
-                        # Give premium
-                        expiry_time = datetime.now() + timedelta(days=PREMIUM_MONTH_DURATION)
-                        await db.update_one(
-                            {"id": referrer_id},
-                            {"$set": {"expiry_time": expiry_time, "referral_count": 0}} # Reset count
-                        )
-                        
-                        # Notify referrer
-                        try:
-                            await client.send_message(
-                                chat_id=referrer_id,
-                                text=f"🎉 <b>Congratulations, {referrer_user.mention}!</b> 🎉\n\nYou have successfully invited {new_count} users and earned <b>1 Month of Free Premium Access</b>! Your referral count has been reset."
-                            )
-                        except (UserIsBlocked, PeerIdInvalid):
-                            pass
-                    else:
-                        # Send progress update
-                        try:
-                            await client.send_message(
-                                chat_id=referrer_id,
-                                text=f"👍 <b>Referral Success!</b>\n\nUser {member.new_chat_member.user.mention} joined the group.\n\nYour new referral count is <b>{new_count} / {REFERRAL_TARGET}</b>."
-                            )
-                        except (UserIsBlocked, PeerIdInvalid):
-                            pass
+            # 2. Check karein ki user pehle hi refer ho chuka hai ya nahi
+            if await db.has_been_referred(new_user_id):
+                return
+                
+            # 3. Naye user ko 'referred' mark karein
+            await db.set_referred_by(new_user_id, referrer_id)
+            
+            # 4. Referrer ka count badhayein
+            await db.increment_referral_count(referrer_id)
+            
+            # 5. Check karein ki target poora hua ya nahi
+            new_count = await db.get_referral_count(referrer_id)
+            
+            try:
+                referrer_user = await client.get_users(referrer_id)
+            except Exception:
+                referrer_user = referrer # Fallback
+            
+            if new_count >= REFERRAL_TARGET:
+                # Premium dein
+                expiry_time = datetime.now() + timedelta(days=PREMIUM_MONTH_DURATION)
+                await db.update_one(
+                    {"id": referrer_id},
+                    {"$set": {"expiry_time": expiry_time, "referral_count": 0}}  # Count reset karein
+                )
+                
+                # Referrer ko suchit karein
+                try:
+                    await client.send_message(
+                        chat_id=referrer_id,
+                        text=f"🎉 <b>Congratulations, {referrer_user.mention}!</b> 🎉\n\nYou have successfully invited {new_count} users and earned <b>1 Month of Free Premium Access</b>! Your referral count has been reset."
+                    )
+                except (UserIsBlocked, PeerIdInvalid):
+                    pass
+            else:
+                # Progress update dein
+                try:
+                    await client.send_message(
+                        chat_id=referrer_id,
+                        text=f"👍 <b>Referral Success!</b>\n\nUser {member.new_chat_member.user.mention} joined the group.\n\nYour new referral count is <b>{new_count} / {REFERRAL_TARGET}</b>."
+                    )
+                except (UserIsBlocked, PeerIdInvalid):
+                    pass
     except Exception as e:
         logger.error(f"Error in welcome_handler: {e}")
