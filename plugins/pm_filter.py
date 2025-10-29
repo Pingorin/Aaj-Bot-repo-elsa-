@@ -642,58 +642,59 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer("I can't send you a message. Please unblock me in PM and try again.", show_alert=True)
             
     elif query.data.startswith("get_ref_link"):
-        ident, chat_id_str = query.data.split("#")
-        user_id = query.from_user.id
-        user_mention = query.from_user.mention
-        chat_id = int(chat_id_str)
-        
-        try:
-            # Check karein ki user ke paas pehle se link hai ya nahi
-            user_data = await db.get_user_data(user_id)
-            if not user_data:
-                await db.add_user(user_id, query.from_user.first_name)
-                user_data = await db.get_user_data(user_id)
+    ident, chat_id_str = query.data.split("#")
+    user_id = query.from_user.id
+    user_mention = query.from_user.mention
+    chat_id = int(chat_id_str)
 
-            referral_link = user_data.get('referral_link')
-            
-            if not referral_link:
-                # User ke liye ek naya permanent invite link banayein
-                link = await client.create_chat_invite_link(
-                    chat_id=chat_id,
-                    name=f"ref_{user_id}", # Isse aap group settings mein link pehchan payenge
-                    creates_join_request=False
-                )
-                referral_link = link.invite_link
-                # Link ko database mein save karein
-                await db.update_referral_link(user_id, referral_link)
-            
-            # Current referral count lein
-            current_count = user_data.get('referral_count', 0)
-            
-            share_text = f"Join this awesome Telegram group! {referral_link}"
-            encoded_share_text = urllib.parse.quote(share_text)
-            
-            await query.message.edit_text(
-                text=script.REFERRAL_TXT.format(
-                    user_mention=user_mention,
-                    referral_link=referral_link,
-                    target=REFERRAL_TARGET,
-                    current_count=current_count
-                ),
-                # Link preview dikhayein
-                disable_web_page_preview=False, 
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={encoded_share_text}")],
-                    [InlineKeyboardButton("Close ❌", callback_data="close_data")]
-                ])
+    try:
+        # Check karein ki user pehle se hai ya nahi
+        user_data = await db.get_user_data(user_id)
+        if not user_data:
+            await db.add_user(user_id, query.from_user.first_name)
+            user_data = await db.get_user_data(user_id)
+
+        # Naya function use karein (get_referral_link)
+        link_data = await db.get_referral_link(user_id, chat_id)
+        referral_link = link_data.get('_id') if link_data else None
+
+        if not referral_link:
+            # User ke liye ek naya permanent invite link banayein
+            link = await client.create_chat_invite_link(
+                chat_id=chat_id,
+                name=f"ref_{user_id}_{chat_id}", # Isse link unique banega
+                creates_join_request=False
             )
-        except ChatAdminRequired:
-            await query.message.edit_text(
-                "<b>Main invite link nahi bana pa raha hoon! 😢\n\n"
-                "Kripya check karein ki main group mein admin hoon aur mere paas 'Invite users' ki permission hai.</b>"
-            )
-        except Exception as e:
-            await query.message.edit_text(f"<b>Ek error aa gaya:</b> <code>{e}</code>")
+            referral_link = link.invite_link
+            # Link ko database mein save karein (naye function se)
+            await db.update_referral_link(user_id, referral_link, chat_id)
+
+        # Current referral count lein
+        current_count = user_data.get('referral_count', 0)
+
+        share_text = f"Join this awesome Telegram group! {referral_link}"
+        encoded_share_text = urllib.parse.quote(share_text)
+
+        await query.message.edit_text(
+            text=script.REFERRAL_TXT.format(
+                user_mention=user_mention,
+                referral_link=referral_link,
+                target=REFERRAL_TARGET,
+                current_count=current_count
+            ),
+            disable_web_page_preview=False, 
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={encoded_share_text}")],
+                [InlineKeyboardButton("Close ❌", callback_data="close_data")]
+            ])
+        )
+    except ChatAdminRequired:
+        await query.message.edit_text(
+            "<b>Main invite link nahi bana pa raha hoon! 😢\n\n"
+            "Kripya check karein ki main group mein admin hoon aur mere paas 'Invite users' ki permission hai.</b>"
+        )
+    except Exception as e:
+        await query.message.edit_text(f"<b>Ek error aa gaya:</b> <code>{e}</code>")
           
     elif query.data == "delallcancel":
         userid = query.from_user.id
