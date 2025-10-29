@@ -35,7 +35,6 @@ class temp(object):
     USERS_CANCEL = False
     GROUPS_CANCEL = False    
     CHAT = {}
-    REFERRED_BY = {} # <-- FIX: Added for referral system
 
 async def is_req_subscribed(bot, query):
     if await db.find_join_req(query.from_user.id):
