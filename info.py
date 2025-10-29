@@ -48,7 +48,8 @@ SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "")
 SHORTENER_API2 = environ.get("SHORTENER_API2", "")
 SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "")
 TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "0"))
-
+# Referral system
+REFERRAL_TARGET = int(environ.get('REFERRAL_TARGET', '2')) # Kitne referrals pe reward milega
 # languages search
 LANGUAGES = ["hindi", "english", "telugu", "tamil", "kannada", "malayalam"]
 
