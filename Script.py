@@ -184,3 +184,22 @@ User - {}"""
 📆 ᴅᴀᴛᴇ:- <code>{} </code></b>
 
 #verified_{}_completed"""
+
+    NEW_REFERRAL_TXT = """👋 <b>Welcome! You were referred by {referrer_mention}.</b>"""
+    
+    REFERRAL_TXT = """<b>💰 ʀᴇꜰᴇʀʀᴀʟ ᴘʀᴏɢʀᴀᴍ 💰</b>
+
+Share this link with your friends:
+`https://t.me/{bot_username}?start=ref_{user_id}`
+
+<b>Your Progress:</b>
+- Total Referrals: <b>{total_referrals}</b>
+- Current Progress: <b>{current_referrals} / {referral_target}</b>
+
+When you reach <b>{referral_target}</b> referrals, click 'Claim Reward' to get <b>1 Month of Premium Access</b>!
+"""
+
+    REFERRAL_CLAIM_SUCCESS_TXT = """✅ Success! You have received 1 Month of Premium Access. Your referral target has been reset."""
+
+    REFERRAL_NOT_ENOUGH_TXT = """⚠️ You only have {current_referrals}/{referral_target} referrals for your next reward. Keep sharing!"""
+
