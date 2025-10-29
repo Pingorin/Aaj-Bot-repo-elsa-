@@ -34,6 +34,7 @@ class Database:
         # FIX: Point self.users to the same collection as self.col
         self.users = self.col 
         self.req = mydb.requests
+        self.ref_links = mydb.referral_links  # <-- YEH LINE ADD KAREIN
 
     def new_user(self, id, name):
         return dict(
