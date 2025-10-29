@@ -642,21 +642,36 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer("I can't send you a message. Please unblock me in PM and try again.", show_alert=True)
             
     elif query.data.startswith("get_ref_link"):
-        ident, chat_id = query.data.split("#")
+        ident, chat_id_str = query.data.split("#")
         user_id = query.from_user.id
         user_mention = query.from_user.mention
+        chat_id = int(chat_id_str)
         
         try:
-            # Generate the referral link
-            referral_link = f"https://t.me/{temp.U_NAME}?start=ref_{user_id}_{chat_id}"
+            # Check if user already has a link
+            user_data = await db.get_user_data(user_id)
+            if not user_data:
+                # This should not happen if they are clicking buttons, but just in case
+                await db.add_user(user_id, query.from_user.first_name)
+                user_data = await db.get_user_data(user_id)
+
+            referral_link = user_data.get('referral_link')
+            
+            if not referral_link:
+                # Create a new, permanent invite link for this user
+                link = await client.create_chat_invite_link(
+                    chat_id=chat_id,
+                    name=f"ref_{user_id}", # Name helps you see it in group settings
+                    creates_join_request=False
+                )
+                referral_link = link.invite_link
+                # Save it to the user's DB record
+                await db.update_referral_link(user_id, referral_link)
             
             # Get current referral count
-            current_count = await db.get_referral_count(user_id)
+            current_count = user_data.get('referral_count', 0)
             
             share_text = f"Join this awesome Telegram group! {referral_link}"
-            
-            # --- THIS IS THE FIX ---
-            # You must URL-encode the text for the share URL
             encoded_share_text = urllib.parse.quote(share_text)
             
             await query.message.edit_text(
@@ -666,12 +681,17 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     target=REFERRAL_TARGET,
                     current_count=current_count
                 ),
-                disable_web_page_preview=True,
+                # Show the group link preview
+                disable_web_page_preview=False, 
                 reply_markup=InlineKeyboardMarkup([
-                    # Use the new 'encoded_share_text' variable here
                     [InlineKeyboardButton("Share Link 🔗", url=f"https://t.me/share/url?url={encoded_share_text}")],
                     [InlineKeyboardButton("Close ❌", callback_data="close_data")]
                 ])
+            )
+        except ChatAdminRequired:
+            await query.message.edit_text(
+                "I cannot create an invite link! 😢\n\n"
+                "Please make sure I am an **admin in the group** and have the **'Invite users'** permission."
             )
         except Exception as e:
             await query.message.edit_text(f"An error occurred: {e}")
