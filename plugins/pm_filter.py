@@ -1266,7 +1266,7 @@ async def auto_filter(client, msg, spoll=False):
     
     # FIX: Add 'Refer & Earn' Button
     btn.append(
-        [InlineKeyboardButton("💰 ʀᴇꜰᴇʀ & ᴇᴀʀɴ 💰", callback_data=f"referral#{req}#{message.chat.id}")]
+        [InlineKeyboardButton("💰 ʀᴇꜰᴇʀ & ᴇᴀʀɴ 💰", url=f"https://t.me/{temp.U_NAME}?start=get_referral_{message.chat.id}")]
     )
 
     # Add 'How to Download' button
