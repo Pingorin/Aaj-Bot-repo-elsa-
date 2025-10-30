@@ -76,6 +76,13 @@ class Database:
         # Admin ke liye sabhi 'join_reqs' logs delete karne ka function
         await self.join_reqs.drop()
     
+    # --- YAHAN NAYA FUNCTION ADD KIYA GAYA HAI ---
+    async def delete_specific_join_req(self, user_id, chat_id):
+        # Sirf uss user aur channel ka log delete karein
+        await self.join_reqs.delete_one({
+            'user_id': user_id,
+            'chat_id': chat_id
+        })
     # --- FIX KHATAM ---
 
     def new_group(self, id, title):
