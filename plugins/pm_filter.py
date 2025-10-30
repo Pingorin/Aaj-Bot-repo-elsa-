@@ -623,51 +623,36 @@ async def cb_handler(client: Client, query: CallbackQuery):
     
     # FIX: Add referral button handlers
     elif query.data.startswith("referral"):
-        ident, user_id, chat_id = query.data.split("#")
+        ident, user_id, chat_id_str = query.data.split("#")
         
+        # Check karein ki user wahi hai jisne command run kiya tha
         if int(user_id) != 0 and query.from_user.id != int(user_id):
             return await query.answer(script.ALRT_TXT, show_alert=True)
-        
-        try:
-            # Send a button to the user's PM to confirm
-            await client.send_message(
-                chat_id=query.from_user.id,
-                text="Click the button below to get your personal referral link!",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("Get My Referral Link", callback_data=f"get_ref_link#{chat_id}")]
-                ])
-            )
-            await query.answer("Please check your PM... I've sent your referral details there!", show_alert=True)
-        except (UserIsBlocked, PeerIdInvalid):
-            await query.answer("I can't send you a message. Please unblock me in PM and try again.", show_alert=True)
-            
-    elif query.data.startswith("get_ref_link"):
-        ident, chat_id_str = query.data.split("#")
-        user_id = query.from_user.id
-        user_mention = query.from_user.mention
-        chat_id = int(chat_id_str)
-        
-        try:
-            # Check karein ki user pehle se hai ya nahi
-            user_data = await db.get_user_data(user_id)
-            if not user_data:
-                await db.add_user(user_id, query.from_user.first_name)
-                user_data = await db.get_user_data(user_id)
 
-            # Naya function use karein (get_referral_link)
-            link_data = await db.get_referral_link(user_id, chat_id)
+        chat_id = int(chat_id_str)
+        user_mention = query.from_user.mention
+        
+        try:
+            # User data check karein
+            user_data = await db.get_user_data(query.from_user.id)
+            if not user_data:
+                await db.add_user(query.from_user.id, query.from_user.first_name)
+                user_data = await db.get_user_data(query.from_user.id)
+
+            # Referral link check karein
+            link_data = await db.get_referral_link(query.from_user.id, chat_id)
             referral_link = link_data.get('_id') if link_data else None
             
             if not referral_link:
-                # User ke liye ek naya permanent invite link banayein
+                # Naya invite link banayein
                 link = await client.create_chat_invite_link(
                     chat_id=chat_id,
-                    name=f"ref_{user_id}_{chat_id}", # Isse link unique banega
+                    name=f"ref_{query.from_user.id}_{chat_id}",
                     creates_join_request=False
                 )
                 referral_link = link.invite_link
-                # Link ko database mein save karein (naye function se)
-                await db.update_referral_link(user_id, referral_link, chat_id)
+                # Link ko DB mein save karein
+                await db.update_referral_link(query.from_user.id, referral_link, chat_id)
             
             # Current referral count lein
             current_count = user_data.get('referral_count', 0)
@@ -675,7 +660,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
             share_text = f"Join this awesome Telegram group! {referral_link}"
             encoded_share_text = urllib.parse.quote(share_text)
             
-            await query.message.edit_text(
+            # Message seedha PM mein bhej dein
+            await client.send_message(
+                chat_id=query.from_user.id, # User ke PM mein
                 text=script.REFERRAL_TXT.format(
                     user_mention=user_mention,
                     referral_link=referral_link,
@@ -688,13 +675,22 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     [InlineKeyboardButton("Close ❌", callback_data="close_data")]
                 ])
             )
+            
+            # Button ki loading animation hatane ke liye (bina pop-up ke)
+            await query.answer() 
+            
+        except (UserIsBlocked, PeerIdInvalid):
+            # Agar PM block hai, tab pop-up dikhayein
+            await query.answer("Main aapko PM mein message nahi bhej sakta. Kripya bot ko unblock karein aur fir try karein.", show_alert=True)
         except ChatAdminRequired:
-            await query.message.edit_text(
-                "<b>Main invite link nahi bana pa raha hoon! 😢\n\n"
-                "Kripya check karein ki main group mein admin hoon aur mere paas 'Invite users' ki permission hai.</b>"
+            await query.answer(
+                "Main invite link nahi bana pa raha hoon! 😢\n"
+                "Kripya check karein ki main group mein admin hoon aur 'Invite users' ki permission hai.", 
+                show_alert=True
             )
         except Exception as e:
-            await query.message.edit_text(f"<b>Ek error aa gaya:</b> <code>{e}</code>")
+            await query.answer(f"Ek error aa gaya: {e}", show_alert=True)
+            logger.error(f"Error in referral cb: {e}")
           
     elif query.data == "delallcancel":
         userid = query.from_user.id
