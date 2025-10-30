@@ -644,8 +644,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
         settings = await get_settings(int(grp_id))
         user_id = query.from_user.id
 
-        # Ab hum Telegram se nahi, apne database se check karenge
-        
         # Check karein ki user ne pehle channel (AUTH_CHANNEL) ke liye request bheji hai ya nahi
         auth_requested = await db.find_join_req(user_id, AUTH_CHANNEL)
             
@@ -686,6 +684,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 ]
             )
         )
+        
+        # --- YEH HAI FIX ---
+        # File bhej di hai, ab user ke request logs delete kar dein
+        # Taaki agar woh channel leave kare to use dubara request bhejni pade
+        await db.del_user_join_reqs(user_id)
 
     elif query.data.startswith("stream"):
         user_id = query.from_user.id
