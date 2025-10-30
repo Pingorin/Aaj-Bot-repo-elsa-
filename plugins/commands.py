@@ -234,9 +234,14 @@ async def start(client:Client, message):
         file_size = get_size(files.file_size),
         file_caption=files.caption
     )
+    
+    # --- YEH HAI FIX ---
+    # Galti yahan thi: callback_data mein 'file.file_id' ki jagah 'file_id' hoga
     btn = [[
-        InlineKeyboardButton("✛ ᴡᴀᴛᴄʜ & ᴅᴏᴡɴʟᴏᴀᴅ ✛", callback_data=f'stream#{file.file_id}')
+        InlineKeyboardButton("✛ ᴡᴀᴛᴄʜ & ᴅᴏᴡɴʟᴏᴀᴅ ✛", callback_data=f'stream#{file_id}')
     ]]
+    # --- FIX ENDS ---
+
     d=await client.send_cached_media(
         chat_id=message.from_user.id,
         file_id=file_id,
@@ -251,8 +256,8 @@ async def start(client:Client, message):
     await client.send_message(
         chat_id=message.from_user.id,
         text="<b>⚠️ ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛᴇᴅ ᴍᴏᴠɪᴇ ꜰɪʟᴇ ɪs ᴅᴇʟᴇᴛᴇᴅ, ᴛᴏ ᴀᴠᴏɪᴅ ᴄᴏᴘʏʀɪɢʜᴛ ɪɴ ʙᴏᴛ, ɪꜰ ʏᴏᴜ ᴡᴀɴᴛ ᴀɢᴀɪɴ ᴛʜᴇɴ sᴇᴀʀᴄʜ ᴀɢᴀɪɴ ☺️</b>"
-    )       
-
+    )
+       
 @Client.on_message(filters.command('delete'))
 async def delete(bot, message):
     if message.from_user.id not in ADMINS:
