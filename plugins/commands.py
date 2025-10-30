@@ -35,7 +35,7 @@ async def start(client:Client, message):
     # Handle Referral link request
     if len(m.command) == 2 and m.command[1].startswith("get_referral_"):
         try:
-            _, chat_id_str = m.command[1].split("_", 1)
+            _, chat_id_str = m.command[1].replace("get_referral_", "")
             chat_id = int(chat_id_str)
             user_id = m.from_user.id
             user_mention = m.from_user.mention
