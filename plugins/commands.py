@@ -31,11 +31,15 @@ async def start(client:Client, message):
     m = message
     user_id = m.from_user.id
 
-    # --- NAYA REFERRAL CODE BLOCK ---
+    # --- NAYA REFERRAL CODE BLOCK --
     # Handle Referral link request
     if len(m.command) == 2 and m.command[1].startswith("get_referral_"):
         try:
-            _, chat_id_str = m.command[1].replace("get_referral_", "")
+            # --- YEH HAI FIX ---
+            # Hum 'get_referral_' ko string se hata rahe hain, split nahi kar rahe
+            chat_id_str = m.command[1].replace("get_referral_", "")
+            # --- FIX ENDS ---
+            
             chat_id = int(chat_id_str)
             user_id = m.from_user.id
             user_mention = m.from_user.mention
@@ -91,7 +95,7 @@ async def start(client:Client, message):
         except Exception as e:
             await m.reply_text(f"<b>Ek error aa gaya:</b> <code>{e}</code>")
             logger.error(f"Error in get_referral start: {e}")
-        return # Error ke baad bhi ruk jaayein
+        return # Error ke baad bhi ruk jaayei
     # --- NAYA REFERRAL CODE BLOCK YAHAN KHATAM HOTA HAI ---
             
     if len(m.command) == 2 and m.command[1].startswith('notcopy'):
