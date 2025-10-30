@@ -164,7 +164,7 @@ async def next_page(bot, query):
 
     # FIX: Add 'Refer & Earn' Button
     btn.append(
-        [InlineKeyboardButton("💰 ʀᴇꜰᴇʀ & ᴇᴀʀɴ 💰", callback_data=f"referral#{req}#{query.message.chat.id}")]
+        [InlineKeyboardButton("💰 ʀᴇꜰᴇʀ & ᴇᴀʀɴ 💰", url=f"https://t.me/{temp.U_NAME}?start=get_referral_{query.message.chat.id}")]
     )
 
     # Add the 'How to Download' button from settings
