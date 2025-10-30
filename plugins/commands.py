@@ -716,7 +716,7 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
             and (not member.old_chat_member or member.old_chat_member.status in [enums.ChatMemberStatus.LEFT, enums.ChatMemberStatus.BANNED])
         ):
             new_user_id = member.new_chat_member.user.id
-            chat_id = member.chat.id # YEH LINE IMPORTANT HAI
+            chat_id = member.chat.id
             
             # Invite link se referrer ko dhoondein
             invite_link_str = member.invite_link.invite_link
@@ -731,14 +731,15 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
             if new_user_id == referrer_id:
                 return 
                 
-            # 2. Check karein ki user pehle hi 'ISS GROUP MEIN' refer ho chuka hai ya nahi
-            if await db.has_been_referred_in_group(new_user_id, chat_id):
-                return
+            # 2. Re-join check (REMOVED)
+            # Humne yahan se 'has_been_referred_in_group' wala check hata diya hai
+            # Taaki re-join karne par bhi points milein.
                 
-            # 3. Naye user ka referral 'ISS GROUP KE LIYE' log karein
+            # 3. Naye user ka referral log karein (iss group ke liye)
+            # Hum log phir bhi karenge taaki record rahe
             await db.log_referral(new_user_id, referrer_id, chat_id)
             
-            # 4. Referrer ka count badhayein
+            # 4. Referrer ka count badhayein (yeh global count hai)
             await db.increment_referral_count(referrer_id)
             
             # 5. Check karein ki target poora hua ya nahi
@@ -757,7 +758,7 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
                     {"$set": {"expiry_time": expiry_time, "referral_count": 0}}  # Count reset karein
                 )
                 
-                # Referrer ko suchit karein
+                # Referrer ko suchit karein (Target poora hone ka message)
                 try:
                     await client.send_message(
                         chat_id=referrer_id,
@@ -766,7 +767,7 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
                 except (UserIsBlocked, PeerIdInvalid):
                     pass
             else:
-                # Progress update dein
+                # Referrer ko suchit karein (Point milne ka message)
                 try:
                     await client.send_message(
                         chat_id=referrer_id,
