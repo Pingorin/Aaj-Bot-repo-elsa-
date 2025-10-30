@@ -109,7 +109,7 @@ async def start(client:Client, message):
                 kk, grp_id, file_id = message.command[1].split('_', 2)
                 pre = 'checksubp' if kk == 'filep' else 'checksub'
                 btn.append(
-                    [InlineKeyboardButton("♻️ ᴛʀʏ ᴀɢᴀɪN ♻️", callback_data=f"checksub#{file_id}")]
+                    [InlineKeyboardButton("♻️ ᴛʀʏ ᴀɢᴀɪɴ ♻️", callback_data=f"checksub#{grp_id}#{file_id}")]
                 )
             except (IndexError, ValueError):
                 btn.append(
