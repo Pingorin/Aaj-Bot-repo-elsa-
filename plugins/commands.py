@@ -164,8 +164,9 @@ async def start(client:Client, message):
     
     # Dono channels ke liye subscription status check karein
     # (Assume karein ki utils.py mein is_req_subscribed ko update kar diya gaya hai)
-    auth_subscribed = not AUTH_CHANNEL or await is_req_subscribed(client, message, AUTH_CHANNEL)
-    req_auth_subscribed = not REQ_AUTH_CHANNEL or await is_req_subscribed(client, message, REQ_AUTH_CHANNEL)
+    # Dono channels ke liye subscription status check karein (DATABASE se)
+    auth_subscribed = not AUTH_CHANNEL or await db.find_join_req(message.from_user.id, AUTH_CHANNEL)
+    req_auth_subscribed = not REQ_AUTH_CHANNEL or await db.find_join_req(message.from_user.id, REQ_AUTH_CHANNEL)
 
     # Agar user ne dono mein se koi ek ya dono join nahi kiye hain
     if not auth_subscribed or not req_auth_subscribed:
