@@ -5,6 +5,8 @@ from info import ADMINS, AUTH_CHANNEL, REQ_AUTH_CHANNEL # Dono channel import ka
 
 # Bot ko batayein ki dono channels par nazar rakhe
 CHANNELS = [AUTH_CHANNEL, REQ_AUTH_CHANNEL]
+if not CHANNELS:
+    CHANNELS = []
 
 @Client.on_chat_join_request(filters.chat(CHANNELS))
 async def join_reqs(client, message: ChatJoinRequest):
@@ -25,7 +27,7 @@ async def del_requests(client, message):
     await message.reply("<b>⚙ ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ ᴀʟʟ ᴊᴏɪɴ ʀᴇǫᴜᴇꜱᴛ ʟᴏɢꜱ</b>")
 
 
-# --- YEH NAYA HANDLER HAI JO LEAVE KARNE PAR LOG DELETE KAREGA ---
+# --- YEH HANDLER USER KE LEAVE KARNE PAR LOG DELETE KARTA HAI ---
 @Client.on_chat_member_updated(filters.chat(CHANNELS))
 async def member_update_handler(client, message: ChatMemberUpdated):
     user_id = message.from_user.id
@@ -33,13 +35,9 @@ async def member_update_handler(client, message: ChatMemberUpdated):
 
     try:
         # Check karein agar user ne leave kiya ya ban hua
-        if (
-            message.new_chat_member
-            and message.new_chat_member.status in [
-                enums.ChatMemberStatus.LEFT,
-                enums.ChatMemberStatus.BANNED,
-            ]
-        ):
+        new_status = getattr(message.new_chat_member, "status", None)
+
+        if new_status in [enums.ChatMemberStatus.LEFT, enums.ChatMemberStatus.BANNED]:
             # Database se uss user ka join request log delete karein
             await db.delete_specific_join_req(user_id, chat_id)
             
