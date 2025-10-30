@@ -715,8 +715,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 await query.answer(script.ALRT_TXT.format(query.from_user.first_name), show_alert=True)    
             
     elif query.data.startswith("checksub"):
-        ident, file_id = query.data.split("#")
-        settings = await get_settings(query.message.chat.id)
+        ident, grp_id, file_id = query.data.split("#")
+    settings = await get_settings(int(grp_id))
         if AUTH_CHANNEL and not await is_req_subscribed(client, query):
             await query.answer("ɪ ʟɪᴋᴇ ʏᴏᴜʀ sᴍᴀʀᴛɴᴇss ʙᴜᴛ ᴅᴏɴ'ᴛ ʙᴇ ᴏᴠᴇʀsᴍᴀʀᴛ 😒\nꜰɪʀsᴛ ᴊᴏɪɴ ᴏᴜʀ ᴜᴘᴅᴀᴛᴇs ᴄʜᴀɴɴᴇʟ 😒", show_alert=True)
             return         
