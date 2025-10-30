@@ -642,18 +642,27 @@ async def cb_handler(client: Client, query: CallbackQuery):
     elif query.data.startswith("checksub"):
         ident, grp_id, file_id = query.data.split("#")
         settings = await get_settings(int(grp_id))
+        user_id = query.from_user.id
+
+        # Ab hum Telegram se nahi, apne database se check karenge
         
-        # Pehla channel (AUTH_CHANNEL) check karein
-        if AUTH_CHANNEL and not await is_req_subscribed(client, query, AUTH_CHANNEL):
-            await query.answer("Kripya pehle 'Join Now' button se channel join karein...", show_alert=True)
-            return
+        # Check karein ki user ne pehle channel (AUTH_CHANNEL) ke liye request bheji hai ya nahi
+        auth_requested = await db.find_join_req(user_id, AUTH_CHANNEL)
             
-        # Doosra channel (REQ_AUTH_CHANNEL) check karein
-        if REQ_AUTH_CHANNEL and not await is_req_subscribed(client, query, REQ_AUTH_CHANNEL):
-            await query.answer("Kripya 'Daily Update' channel bhi join karein...", show_alert=True)
+        # Check karein ki user ne doosre channel (REQ_AUTH_CHANNEL) ke liye request bheji hai ya nahi
+        req_auth_requested = await db.find_join_req(user_id, REQ_AUTH_CHANNEL)
+
+        # Agar pehli request missing hai, to pop-up dikhayein
+        if not auth_requested:
+            await query.answer("Kripya pehle 'Join Now' (Main) channel par request bhejein...", show_alert=True)
             return
         
-        # Agar dono join kar liye hain, to file bhej dein
+        # Agar doosri request missing hai, to pop-up dikhayein
+        if not req_auth_requested:
+            await query.answer("Kripya 'Daily Update' channel par bhi request bhejein...", show_alert=True)
+            return
+        
+        # Agar dono request bhej di hain, to file bhej dein
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('ɴᴏ sᴜᴄʜ ꜰɪʟᴇ ᴇxɪsᴛs 🚫')
