@@ -820,5 +820,3 @@ async def welcome_handler(client: Client, member: ChatMemberUpdated):
                     pass
     except Exception as e:
         logger.error(f"Error in welcome_handler: {e}")
-
-Update commands.py
