@@ -198,6 +198,7 @@ async def start(client:Client, message):
             pass_1 = True  # User member hai
         elif await db.find_join_req(user_id, REQ_SUB_CHANNEL_1):
             pass_1 = True  # User member nahi hai, lekin request pending hai
+        # Agar dono nahi hain, toh pass_1 = False hi rahega (jo sahi hai)
     else:
         pass_1 = True  # Channel 1 set hi nahi hai, isliye pass
 
@@ -213,6 +214,7 @@ async def start(client:Client, message):
             pass_2 = True  # User member hai
         elif await db.find_join_req(user_id, REQ_SUB_CHANNEL_2):
             pass_2 = True  # User member nahi hai, lekin request pending hai
+        # Agar dono nahi hain, toh pass_2 = False hi rahega (jo sahi hai)
     else:
         pass_2 = True  # Channel 2 set hi nahi hai, isliye pass
 
@@ -266,7 +268,7 @@ async def start(client:Client, message):
         )
         return # Function ko yahin rok dein
     
-    # --- FSUB CHECK KHATAM ---
+   # --- FSUB CHECK KHATAM ---
 
     if len(message.command) == 2 and message.command[1] in ["subscribe", "error", "okay", "help", "buy_premium"]:
         if message.command[1] == "buy_premium":
