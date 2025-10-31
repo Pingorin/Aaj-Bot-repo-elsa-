@@ -60,8 +60,8 @@ QUALITIES = ["4K", "2160p", "1080p", "720p", "480p", "360p"]
 # Apne Environment Variables mein REQ_SUB_CHANNEL_1 aur REQ_SUB_CHANNEL_2 set karein.
 # Bot inn dono channels mein 'Invite users' permission ke saath Admin hona chahiye.
 # Agar channel istemal nahi karna hai toh 'None' ya 0 set karein.
-req_sub_channel_1 = environ.get('REQ_SUB_CHANNEL_1',  '-1003278952821')
-req_sub_channel_2 = environ.get('REQ_SUB_CHANNEL_2',  '-1003166637811')
+req_sub_channel_1 = environ.get('REQ_SUB_CHANNEL_1',  '')
+req_sub_channel_2 = environ.get('REQ_SUB_CHANNEL_2',  '')
 
 REQ_SUB_CHANNEL_1 = int(req_sub_channel_1) if req_sub_channel_1 and id_pattern.search(req_sub_channel_1) else None
 REQ_SUB_CHANNEL_2 = int(req_sub_channel_2) if req_sub_channel_2 and id_pattern.search(req_sub_channel_2) else None
