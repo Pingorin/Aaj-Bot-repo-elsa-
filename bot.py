@@ -13,8 +13,8 @@ temp.BANNED_CHATS = []
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
 from Script import script 
-from datetime import date, datetime 
-# import datetime  <-- FIX 2: Removed redundant import
+from datetime import date  # <-- FIX 2: Sirf 'date' class import karein
+import datetime            # <-- FIX 2: Poora 'datetime' module import karein
 import pytz
 from aiohttp import web
 from plugins import web_server, check_expired_premium
@@ -50,15 +50,18 @@ class Bot(Client):
         print(f"{me.first_name} is started now ❤️")
         tz = pytz.timezone('Asia/Kolkata')
         today = date.today()
+        # Ab yeh lines sahi se kaam karengi
         now = datetime.datetime.now(tz)
         timee = now.strftime("%H:%M:%S %p") 
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
-        await self.send_message(chat_id=LOG_CHANNEL, text=f"<b>{me.mention} ʀᴇsᴛᴀʀᴛᴇᴅ 🤖\n\n📆 ᴅᴀᴛᴇ - <code>{today}</code>\n🕙 ᴛɪᴍᴇ - <code>{timee}</code>\n🌍 ᴛɪᴍᴇ ᴢᴏɴᴇ - Code>Asia/Kolkata</code></b>")
+        # --- FIX 3: Log message mein 'Code>' typo fix kiya ---
+        await self.send_message(chat_id=LOG_CHANNEL, text=f"<b>{me.mention} ʀᴇsᴛᴀʀᴛᴇᴅ 🤖\n\n📆 ᴅᴀᴛᴇ - <code>{today}</code>\n🕙 ᴛɪᴍᴇ - <code>{timee}</code>\n🌍 ᴛɪᴍᴇ ᴢᴏɴᴇ - <code>Asia/Kolkata</code></b>")
         await self.send_message(chat_id=SUPPORT_GROUP, text=f"<b>{me.mention} ʀᴇsᴛᴀʀᴛᴇᴅ 🤖</b>")
         tt = time.time() - st
+        # Ab yeh line bhi sahi se kaam karegi
         seconds = int(datetime.timedelta(seconds=tt).seconds)
         for admin in ADMINS:
             await self.send_message(chat_id=admin, text=f"<b>✅ ʙᴏᴛ ʀᴇsᴛᴀʀᴛᴇᴅ\n🕥 ᴛɪᴍᴇ ᴛᴀᴋᴇɴ - <code>{seconds} sᴇᴄᴏɴᴅs</code></b>")
