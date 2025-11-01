@@ -280,7 +280,8 @@ def get_readable_time(seconds):
     result = ''
     for period_name, period_seconds in periods:
         if seconds >= period_seconds:
-            period_value, seconds = div_mod(seconds, period_seconds)
+            # FIX 4: 'div_mod' ko 'divmod' se badal diya gaya hai
+            period_value, seconds = divmod(seconds, period_seconds)
             result += f'{int(period_value)}{period_name}'
     return result
 
@@ -314,6 +315,7 @@ async def check_fsub(client, message):
              (True, None) - User passes both checks.
              (False, channel_id) - User fails, returns the ID of the failing channel.
     """
+    # message (Message ya CallbackQuery) se user_id nikalein
     user_id = message.from_user.id
     
     # Step 1: Check Channel 1
