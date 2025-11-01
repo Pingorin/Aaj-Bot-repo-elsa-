@@ -57,6 +57,10 @@ QUALITIES = ["4K", "2160p", "1080p", "720p", "480p", "360p"]
 
 auth_channel = environ.get('AUTH_CHANNEL', '-1003105162989')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
+# --- YEH NAYI LINE ADD KAREIN ---
+auth_channel_2 = environ.get('AUTH_CHANNEL_2', '-1003295790341') # Yahan apni dusri channel ID daalein
+AUTH_CHANNEL_2 = int(auth_channel_2) if auth_channel_2 and id_pattern.search(auth_channel_2) else None
+# --- BADLAV KHATM ---
 SUPPORT_GROUP = int(environ.get('SUPPORT_GROUP', '-1003115990357'))
 
 # hastags request features
