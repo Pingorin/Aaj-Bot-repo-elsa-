@@ -45,17 +45,17 @@ IS_VERIFY = is_enabled('IS_VERIFY', True)
 LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-1003179051423'))
 TUTORIAL = environ.get("TUTORIAL", "https://t.me/how_to_dwnload_mov")
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")
-SHORTENER_API = environ.get("SHORTENER_API", "613ce973446725bfe2bf909b320c7a1e84c4bdc8")
-SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "softurl.in")
-SHORTENER_API2 = environ.get("SHORTENER_API2", "b68a9657e3370f9716db63b3942056513cf90c6c")
-SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "shortxlinks.com")
+SHORTENER_API = environ.get("SHORTENER_API", "")
+SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "")
+SHORTENER_API2 = environ.get("SHORTENER_API2", "")
+SHORTENER_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "")
 TWO_VERIFY_GAP = int(environ.get('TWO_VERIFY_GAP', "0"))
 # Default time ke liye verification valid rahega (24 hours)
 DEFAULT_VERIFY_DURATION = 86400 
 # languages search
 # --- Verification 3 Settings ---
-SHORTENER_WEBSITE3 = "7c480930494be0edb7e546125c35d79840d5146b"
-SHORTENER_API3 = "shortxlinks.com"
+SHORTENER_WEBSITE3 = ""
+SHORTENER_API3 = ""
 # Default gap time (in seconds) between V2 and V3 (e.g., 5 minutes)
 THIRD_VERIFY_GAP = 300 
 
